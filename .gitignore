@@ -32,6 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-
-!/src/main/resources/com/aefstathiou/crm/secrets.properties
-/src/main/resources/com/aefstathiou/crm/secrets.properties
+/src/main/resources/secrets.properties
