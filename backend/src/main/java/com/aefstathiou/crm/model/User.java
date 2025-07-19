@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String email;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
+    @Column(name = "roles")
     private List<Role> roles;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
