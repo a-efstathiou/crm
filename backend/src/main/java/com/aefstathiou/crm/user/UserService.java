@@ -6,47 +6,53 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository usersRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final UserDTOMapper userDTOMapper;
 
     public String createUser(User user) {
-        Optional<User> optional=usersRepository.findById(user.getId());
-        Optional<User> mailopt=usersRepository.findByEmail(user.getEmail());
-        if (optional.isPresent()){
+        Optional<User> userOptional= userRepository.findById(user.getId());
+        Optional<User> mailOptional= userRepository.findByEmail(user.getEmail());
+        if (userOptional.isPresent()){
             throw new IllegalArgumentException("The users already exists");
         }
-        if(mailopt.isPresent()){
+        if(mailOptional.isPresent()){
             throw new IllegalArgumentException("The email is already used");
         }
-        usersRepository.save(user);
+        userRepository.save(user);
         return jwtService.generateToken(user);
     }
 
-    public List<User> getAllUsers() { return usersRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public void deleteUser(String email){
-        if(usersRepository.findByEmail(email).isEmpty()){
+        if(userRepository.findByEmail(email).isEmpty()){
             throw new IllegalArgumentException("The given user does not exist");
         }
-        usersRepository.deleteByEmail(email);
+        userRepository.deleteByEmail(email);
     }
 
-    public Optional<User> getUserByEmail(String email){
-        return usersRepository.findByEmail(email);
+    public Optional<UserDTO> getUserByEmail(String email){
+        return userRepository.findByEmail(email).map(userDTOMapper);
     }
 
-    public Optional<User> getUserById(Long id){
-        return usersRepository.findById(id);
+    public Optional<UserDTO> getUserById(Long id){
+        return userRepository.findById(id).map(userDTOMapper);
     }
 
     public void updateUser(long id, User userUpd){
-        User user=usersRepository.findById(id).orElseThrow(()->new IllegalArgumentException("The User does not exist"));
+        User user= userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("The User with id [%s] does not exist".formatted(id)));
         if(userUpd.getEmail()!=null){
             user.setEmail(userUpd.getEmail());
         }
@@ -63,7 +69,17 @@ public class UserService {
             user.setRoles(userUpd.getRoles());
         }
 
-        usersRepository.save(user);
+        userRepository.save(user);
+    }
+
+    public void updateUserRoles(long id, UserRolesUpdateRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("The User with id [%s] does not exist".formatted(id)));
+        if(request.getRoles()!=null && !request.getRoles().isEmpty()){
+            user.setRoles(request.getRoles());
+        }
+
+        userRepository.save(user);
     }
 
 }
