@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.config;
+package com.aefstathiou.crm.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

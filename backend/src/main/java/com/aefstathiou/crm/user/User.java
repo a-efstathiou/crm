@@ -1,6 +1,7 @@
-package com.aefstathiou.crm.model;
+package com.aefstathiou.crm.user;
 
-import com.aefstathiou.crm.model.enums.Role;
+import com.aefstathiou.crm.jwt.JwtToken;
+import com.aefstathiou.crm.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,7 +33,7 @@ public class User implements UserDetails {
     @Column(name = "roles")
     private List<Role> roles;
     @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+    private List<JwtToken> jwtTokens;
 
     public User(String firstName, String lastName, String password, String email,List<Role> roles) {
         this.firstName = firstName;

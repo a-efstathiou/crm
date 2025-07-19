@@ -1,6 +1,7 @@
-package com.aefstathiou.crm.model;
+package com.aefstathiou.crm.jwt;
 
-import com.aefstathiou.crm.model.enums.TokenType;
+import com.aefstathiou.crm.enums.TokenType;
+import com.aefstathiou.crm.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Token {
+public class JwtToken {
     @Id
     @GeneratedValue
     public Integer id;
@@ -25,6 +26,6 @@ public class Token {
     public boolean expired;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     public User user;
 }

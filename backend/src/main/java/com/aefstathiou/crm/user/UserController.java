@@ -1,8 +1,6 @@
-package com.aefstathiou.crm.controller;
+package com.aefstathiou.crm.user;
 
-import com.aefstathiou.crm.model.enums.Role;
-import com.aefstathiou.crm.model.User;
-import com.aefstathiou.crm.service.UserService;
+import com.aefstathiou.crm.enums.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

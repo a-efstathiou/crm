@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.model.enums;
+package com.aefstathiou.crm.enums;
 
 public enum Role {
     ROLE_CUSTOMER,

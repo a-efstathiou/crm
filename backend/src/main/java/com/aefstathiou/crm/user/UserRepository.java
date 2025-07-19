@@ -1,6 +1,5 @@
-package com.aefstathiou.crm.repository;
+package com.aefstathiou.crm.user;
 
-import com.aefstathiou.crm.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

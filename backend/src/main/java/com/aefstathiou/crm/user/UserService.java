@@ -1,10 +1,7 @@
-package com.aefstathiou.crm.service;
+package com.aefstathiou.crm.user;
 
-import com.aefstathiou.crm.config.JwtService;
-import com.aefstathiou.crm.model.User;
-import com.aefstathiou.crm.repository.UserRepository;
+import com.aefstathiou.crm.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
