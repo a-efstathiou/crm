@@ -34,4 +34,4 @@ build/
 
 /backend/src/main/resources/secrets.properties
 /src/main/resources/secrets.properties
-!/.idea/
+./.idea
