@@ -1,6 +1,6 @@
 package com.aefstathiou.crm.model;
 
-import com.aefstathiou.crm.model.Enums.Role;
+import com.aefstathiou.crm.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

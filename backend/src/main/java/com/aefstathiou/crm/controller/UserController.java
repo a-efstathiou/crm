@@ -1,6 +1,6 @@
 package com.aefstathiou.crm.controller;
 
-import com.aefstathiou.crm.model.Enums.Role;
+import com.aefstathiou.crm.model.enums.Role;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.service.UserService;
 import lombok.AllArgsConstructor;

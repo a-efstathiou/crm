@@ -1,6 +1,6 @@
 package com.aefstathiou.crm.model;
 
-import com.aefstathiou.crm.model.Enums.TokenType;
+import com.aefstathiou.crm.model.enums.TokenType;
 import jakarta.persistence.*;
 import lombok.*;
 
