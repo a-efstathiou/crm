@@ -1,0 +1,27 @@
+import React from 'react';
+
+const UserList = () => {
+    return (
+        <div style={styles.container}>
+            <h1 style={styles.heading}>UserList</h1>
+            <p style={styles.text}>Welcome to your CRM UserList.</p>
+        </div>
+    );
+};
+
+const styles = {
+    container: {
+        padding: '2rem',
+        textAlign: 'center',
+    },
+    heading: {
+        fontSize: '2rem',
+        marginBottom: '1rem',
+    },
+    text: {
+        fontSize: '1rem',
+        color: '#666',
+    },
+};
+
+export default UserList;

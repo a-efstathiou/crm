@@ -1,0 +1,80 @@
+:root {
+    --sidebar-width: 280px;
+    --sidebar-width-collapsed: 80px;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100%;
+    background: linear-gradient(135deg, #1a1c2e, #16181f);
+    transition: width 0.3s ease;
+    color: white;
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-width-collapsed);
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    align-self: flex-end;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.sidebar-link {
+    color: #a0a3bd;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.sidebar-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.hide-on-collapse {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .hide-on-collapse {
+    opacity: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    background: linear-gradient(45deg, #6b8cff, #8b9fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: var(--sidebar-width-collapsed);
+    }
+
+    .sidebar .hide-on-collapse {
+        opacity: 0;
+        width: 0;
+        visibility: hidden;
+    }
+
+    .sidebar .logo-text {
+        opacity: 0;
+    }
+}
