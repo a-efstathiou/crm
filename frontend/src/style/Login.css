@@ -1,112 +1,102 @@
 .login-page {
-    background-color: #031926;
-    display:flex;
-    width: 100%;
+    background-color: #F4F4F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
-    top: 0;
-    position:relative;
-    min-height: 100%;
-
+    padding: 1rem;
 }
-.info-text {
-    width: 100%;
-}
-.login-row {
-    position: relative;
-    height: 100%;
-}
-.login-card-col {
-    flex:1;
-    height: 100%;
-    min-height: 100%;
-    /*max-height: auto;*/
-    overflow-y:visible;
-    box-sizing: border-box; /* Ensure padding is included in the element's total size */
-}
-
 
 .login-card {
-    box-sizing: border-box;
-    background-color: #77ACA2 !important;
-    border-radius: 35px !important;
-    overflow-x:auto;
-    overflow-y:auto;
-    height: auto;
-    backdrop-filter: saturate(200%) blur(25px);
-    max-height: 100%;
-    min-height: auto;
-    border:2px solid #F4E9CD !important;
-}
-
-#login-form .form-control:focus{
-    border: 1px solid #031926;
-    box-shadow: none;
-    background-color: #9DBEBB;
-}
-
-#login-form .custom-fields-2 {
-    background-color: transparent;
-    border: 1px solid #468189;
-}
-
-
-#login-form .custom-eye-Btn {
-    background-color: transparent;
-    color: #468189;
-    border: 1px solid #468189;
-
-}
-
-#login-form .custom-eye-Btn:hover {
-    background-color: #9DBEBB;
-    border: 1px solid #468189;
-}
-
-.image-text {
-    color: #F4E9CD;
-}
-
-@media (max-width: 1400px) {
-    .image-text{
-        font-size: 1.75em;
-    }
-}
-
-.google-login-btn{
+    background-color: white;
+    border-radius: 20px;
+    padding: 2rem;
     width: 100%;
+    max-height: 100%;
+    max-width: 450px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
 }
 
-@media (min-width: 768px){
-    #login-form, .google-login-btn {
-        width: 70%;
-    }
-}
-
-@media (min-width: 992px){
-    #login-form, .google-login-btn {
-        width: 70%;
-    }
-}
-
-@media(max-width: 992px){
-    #login-form, .google-login-btn {
-        width: 80%;
-    }
-}
-@media(max-width: 768px){
-    #login-form, .google-login-btn {
-        width: 100%;
-    }
+.login-card .card-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex-grow: 1;
+    min-height: 0; /* required inside flex containers */
 }
 
 .login_title {
-    color: #031926;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1F7A8C;
+    margin-bottom: 0.5rem;
 }
+
 .login_subtitle {
-    color: #031926;
-    text-align: center;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 2rem;
 }
-.custom-btn-2{
-    width:100%;
-    margin: 15% 0 6%;
+
+.form-label {
+    font-weight: 600;
+    color: #1F7A8C;
+}
+
+.custom-fields-2 {
+    background-color: #F4F4F9;
+    border: 1px solid #B8DBD9;
+    color: #000;
+}
+
+.custom-fields-2:focus {
+    border-color: #1F7A8C;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.custom-eye-Btn {
+    background-color: #B8DBD9;
+    border-color: #1F7A8C;
+    color: #000;
+}
+
+.custom-eye-Btn:hover {
+    background-color: #1F7A8C;
+    color: white;
+}
+
+.custom-btn-2 {
+    background-color: #1F7A8C;
+    color: white;
+    border: none;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.custom-btn-2:hover {
+    background-color: #155a6a;
+}
+
+.or-display {
+    font-weight: 600;
+    color: #aaa;
+    margin: 0.5rem 0;
+}
+
+.google-login-btn {
+    background-color: #F0386B;
+    color: white;
+    width: 100%;
+    margin-top: 1rem;
+    border: none;
+}
+
+.google-login-btn:hover {
+    background-color: #c02e5b;
+}
+
+.info-text {
+    font-size: 0.8rem;
+    color: #888;
 }
