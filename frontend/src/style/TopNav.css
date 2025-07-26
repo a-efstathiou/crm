@@ -1,4 +1,22 @@
 .top-nav {
+    background-color: #031926 !important;
+    border-bottom: 1px solid #1f7a8c;
+    color: #ffffff;
     height: 56px;
     z-index: 1050;
+}
+
+.brand-text {
+    color: #B8DBD9 !important;
+}
+
+.topnav-links .nav-link {
+    color: #B8DBD9 !important;
+    margin-left: 1rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.topnav-links .nav-link:hover {
+    color: #F0386B !important;
 }

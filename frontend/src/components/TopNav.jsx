@@ -4,10 +4,10 @@ import '../style/TopNav.css';
 
 function TopNav() {
     return (
-        <Navbar bg="dark" variant="dark" className="top-nav px-3" fixed="top">
+        <Navbar className="top-nav shadow-sm px-3" fixed="top">
             <Container fluid>
-                <Navbar.Brand href="#">NexusFlow</Navbar.Brand>
-                <Nav className="ms-auto">
+                <Navbar.Brand className="fw-bold brand-text" href="#">NexusFlow</Navbar.Brand>
+                <Nav className="ms-auto align-items-center topnav-links">
                     <Nav.Link href="#">Help</Nav.Link>
                     <Nav.Link href="#">Settings</Nav.Link>
                     <Nav.Link href="#">User</Nav.Link>
