@@ -1,5 +1,6 @@
-package com.aefstathiou.crm.jwt;
+package com.aefstathiou.crm.repository;
 
+import com.aefstathiou.crm.model.JwtToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

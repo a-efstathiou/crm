@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.jwt;
+package com.aefstathiou.crm.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,5 @@
-package com.aefstathiou.crm.user;
+package com.aefstathiou.crm.model;
 
-import com.aefstathiou.crm.jwt.JwtToken;
 import com.aefstathiou.crm.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;

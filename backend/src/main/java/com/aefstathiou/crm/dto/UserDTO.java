@@ -1,6 +1,4 @@
-package com.aefstathiou.crm.user;
-
-import com.aefstathiou.crm.enums.Role;
+package com.aefstathiou.crm.dto;
 
 import java.util.List;
 

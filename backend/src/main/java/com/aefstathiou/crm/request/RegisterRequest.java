@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.authentication;
+package com.aefstathiou.crm.request;
 
 import com.aefstathiou.crm.enums.Role;
 import lombok.Builder;

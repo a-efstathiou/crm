@@ -1,6 +1,10 @@
-package com.aefstathiou.crm.user;
+package com.aefstathiou.crm.controller;
 
 import com.aefstathiou.crm.enums.Role;
+import com.aefstathiou.crm.model.User;
+import com.aefstathiou.crm.dto.UserDTO;
+import com.aefstathiou.crm.request.UserRolesUpdateRequest;
+import com.aefstathiou.crm.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping(path = "api/users")
+@RequestMapping(path = "api/v1/users")
 @AllArgsConstructor
 public class UserController {
 

@@ -1,6 +1,10 @@
 package com.aefstathiou.crm.exception;
 
+import com.aefstathiou.crm.model.ApiError;
+import com.aefstathiou.crm.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,28 +14,40 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler{
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleIEntityNotFoundException(EntityNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ApiError> handleIEntityNotFoundException(EntityNotFoundException ex) {
+        logger.trace("Entity not found", ex);
+        ApiError error = new ApiError("ENTITY_NOT_FOUND",ex.getMessage());
+        return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ApiError> handleIllegalArgumentException(IllegalArgumentException ex) {
+        logger.trace("Invalid arguments", ex);
+        ApiError error = new ApiError("UNAUTHORIZED","User doesn't have the required permissions");
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ApiError> handleIllegalStateException(IllegalStateException ex) {
+        logger.trace("Invalid state", ex);
+        ApiError error = new ApiError("UNAUTHORIZED","User doesn't have the required permissions");
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized: " + ex.getMessage());
+    public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex) {
+        logger.trace("Bad Credentials", ex);
+        ApiError error = new ApiError("UNAUTHORIZED","Invalid credentials");
+        return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+    public ResponseEntity<ApiError> handleGeneralException(Exception ex) {
+        logger.trace("Unexpected error", ex);
+        ApiError error = new ApiError("INTERNAL_ERROR","An unexpected error occurred.");
+        return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.authentication;
+package com.aefstathiou.crm.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

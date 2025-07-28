@@ -1,5 +1,6 @@
-package com.aefstathiou.crm.user;
+package com.aefstathiou.crm.dto;
 
+import com.aefstathiou.crm.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 

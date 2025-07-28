@@ -1,7 +1,13 @@
-package com.aefstathiou.crm.user;
+package com.aefstathiou.crm.service;
 
-import com.aefstathiou.crm.jwt.JwtService;
+import com.aefstathiou.crm.dto.UserDTO;
+import com.aefstathiou.crm.dto.UserDTOMapper;
+import com.aefstathiou.crm.model.User;
+import com.aefstathiou.crm.repository.UserRepository;
+import com.aefstathiou.crm.request.UserRolesUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final UserDTOMapper userDTOMapper;
@@ -26,6 +33,7 @@ public class UserService {
             throw new IllegalArgumentException("The email is already used");
         }
         userRepository.save(user);
+        logger.info("User created with email: {}", user.getEmail());
         return jwtService.generateToken(user);
     }
 

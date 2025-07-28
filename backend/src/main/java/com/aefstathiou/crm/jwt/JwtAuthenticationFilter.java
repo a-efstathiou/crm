@@ -1,5 +1,7 @@
 package com.aefstathiou.crm.jwt;
 
+import com.aefstathiou.crm.repository.JwtTokenRepository;
+import com.aefstathiou.crm.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

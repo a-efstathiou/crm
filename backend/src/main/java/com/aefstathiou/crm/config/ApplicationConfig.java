@@ -1,6 +1,6 @@
 package com.aefstathiou.crm.config;
 
-import com.aefstathiou.crm.user.UserRepository;
+import com.aefstathiou.crm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
