@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {Nav} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { UserContext } from './UserContext.jsx';
@@ -8,13 +8,6 @@ function Sidebar({collapsed, setCollapsed}) {
     const { isLoggedIn, isAdmin } = useContext(UserContext);
 
     const toggleSidebar = () => setCollapsed(!collapsed);
-
-    useEffect(() => {
-
-        if (window.innerWidth < 768) {
-            setCollapsed(true);
-        }
-    }, [setCollapsed]);
     
     return (
         <div className={`sidebar d-flex flex-column flex-shrink-0 p-3 ${collapsed ? 'collapsed' : ''}`}>
@@ -27,7 +20,7 @@ function Sidebar({collapsed, setCollapsed}) {
                 <p className="text-muted small hide-on-collapse">Dashboard</p>
             </div>
 
-            <Nav className="sidebar-nav">
+            <Nav className="sidebar-nav navbar-nav-scroll">
                 <LinkContainer to="/">
                     <Nav.Link className="sidebar-link">
                         <i className="bi bi-house"></i>

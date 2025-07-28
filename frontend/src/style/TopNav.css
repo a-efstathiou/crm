@@ -20,3 +20,18 @@
 .topnav-links .nav-link:hover {
     color: #F0386B !important;
 }
+
+.sidebar-offcanvas .offcanvas-body {
+    background-color: #1a1c2e;
+    color: white;
+}
+
+.sidebar-offcanvas .nav-link {
+    color: #a0a3bd;
+}
+
+.sidebar-offcanvas .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+

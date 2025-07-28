@@ -25,9 +25,9 @@ function App() {
     const [user, setUser] = useState("");
     const [isAdmin,setIsAdmin] = useState(false);
     const [isInspector,setIsInspector] = useState(false);
-
     const [isLoading, setIsLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(true);
+    const [showSidebar, setShowSidebar] = useState(window.innerWidth >= 768);
 
     const hasRun = useRef(false);
 
@@ -66,6 +66,14 @@ function App() {
         }
     },[isLoggedIn,user])
 
+    useEffect(() => {
+        const handleResize = () => {
+            setShowSidebar(window.innerWidth >= 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div className="App">
             <BrowserRouter>
@@ -83,7 +91,12 @@ function App() {
                         setFirstName
                     }}
                 >
-                    <Layout collapsed={collapsed} setCollapsed={setCollapsed}>
+                    <Layout
+                        collapsed={collapsed}
+                        setCollapsed={setCollapsed}
+                        showSidebar={showSidebar}
+                        setShowSidebar={setShowSidebar}
+                    >
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
