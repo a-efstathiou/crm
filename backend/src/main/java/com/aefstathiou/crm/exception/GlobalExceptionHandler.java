@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -26,15 +27,22 @@ public class GlobalExceptionHandler{
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiError> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.trace("Invalid arguments", ex);
-        ApiError error = new ApiError("UNAUTHORIZED","User doesn't have the required permissions");
+        ApiError error = new ApiError("ILLEGAL_ARGUMENT",ex.getMessage());
         return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ApiError> handleIllegalStateException(IllegalStateException ex) {
         logger.trace("Invalid state", ex);
-        ApiError error = new ApiError("UNAUTHORIZED","User doesn't have the required permissions");
+        ApiError error = new ApiError("ILLEGAL_STATE",ex.getMessage());
         return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiError> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
+        logger.trace("Unexpected error", ex);
+        ApiError error = new ApiError("UNAUTHORIZED","The user is not authorized to access the resource.");
+        return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
