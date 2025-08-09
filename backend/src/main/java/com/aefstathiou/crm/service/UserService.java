@@ -2,12 +2,15 @@ package com.aefstathiou.crm.service;
 
 import com.aefstathiou.crm.dto.UserDTO;
 import com.aefstathiou.crm.dto.UserDTOMapper;
+import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.repository.UserRepository;
+import com.aefstathiou.crm.request.RegisterRequest;
 import com.aefstathiou.crm.request.UserRolesUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,21 +23,27 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
-    private final JwtService jwtService;
     private final UserDTOMapper userDTOMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public String createUser(User user) {
-        Optional<User> userOptional= userRepository.findById(user.getId());
-        Optional<User> mailOptional= userRepository.findByEmail(user.getEmail());
-        if (userOptional.isPresent()){
-            throw new IllegalArgumentException("The users already exists");
-        }
+    public UserDTO createUser(RegisterRequest registerRequest) {
+        Optional<User> mailOptional= userRepository.findByEmail(registerRequest.getEmail());
         if(mailOptional.isPresent()){
             throw new IllegalArgumentException("The email is already used");
         }
-        userRepository.save(user);
+
+        User user = User.builder()
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .role(Role.CUSTOMER)
+                .build();
+
+        User savedUser = userRepository.save(user);
         logger.info("User created with email: {}", user.getEmail());
-        return jwtService.generateToken(user);
+
+        return userDTOMapper.apply(savedUser);
     }
 
     public List<UserDTO> getAllUsers() {
@@ -73,8 +82,8 @@ public class UserService {
         if(userUpd.getPassword()!=null){
             user.setPassword(userUpd.getPassword());
         }
-        if(userUpd.getRoles()!=null){
-            user.setRoles(userUpd.getRoles());
+        if(userUpd.getRole()!=null){
+            user.setRole(userUpd.getRole());
         }
 
         userRepository.save(user);
@@ -83,8 +92,8 @@ public class UserService {
     public void updateUserRoles(long id, UserRolesUpdateRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("The User with id [%s] does not exist".formatted(id)));
-        if(request.getRoles()!=null && !request.getRoles().isEmpty()){
-            user.setRoles(request.getRoles());
+        if(request.getRole()!=null){
+            user.setRole(request.getRole());
         }
 
         userRepository.save(user);

@@ -1,5 +1,6 @@
 package com.aefstathiou.crm.service;
 
+import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.response.AuthenticationResponse;
 import com.aefstathiou.crm.enums.TokenType;
 import com.aefstathiou.crm.model.JwtToken;
@@ -33,14 +34,14 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
-        if (existingUser.isPresent()) throw new IllegalArgumentException("A username already exists with the email " + request.getEmail());
+        if (existingUser.isPresent()) throw new IllegalArgumentException("A user already exists with the email " + request.getEmail());
 
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(request.getRoles())
+                .role(Role.CUSTOMER)
                 .build();
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);

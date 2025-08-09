@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class UserRolesUpdateRequest {
-    private List<Role> roles;
+    private Role role;
 }
