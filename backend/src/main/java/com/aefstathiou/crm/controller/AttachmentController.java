@@ -3,17 +3,15 @@ package com.aefstathiou.crm.controller;
 import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.exception.ForbiddenException;
 import com.aefstathiou.crm.model.Attachment;
-import com.aefstathiou.crm.model.SupportRequest;
+import com.aefstathiou.crm.model.SupportTicket;
 import com.aefstathiou.crm.model.User;
-import com.aefstathiou.crm.repository.SupportRequestRepository;
+import com.aefstathiou.crm.repository.SupportTicketRepository;
 import com.aefstathiou.crm.repository.UserRepository;
 import com.aefstathiou.crm.service.AttachmentService;
-import io.jsonwebtoken.impl.security.EdwardsCurve;
-import jakarta.annotation.Resource;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/attachments")
 @AllArgsConstructor
 public class AttachmentController {
     private final AttachmentService attachmentService;
-    private final SupportRequestRepository supportRequestRepository;
+    private final SupportTicketRepository supportTicketRepository;
     private final UserRepository userRepository;
 
     @PostMapping("/upload/{supportRequestId}")
@@ -56,23 +55,21 @@ public class AttachmentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Resource> getAttachment(@PathVariable Long id, Principal principal) {
-        try {
-            Attachment attachment = attachmentService.getAttachmentById(id);
 
-            if (!attachmentService.canUserAccessAttachment(attachment, principal)) {
-                throw new ForbiddenException("You do not have permission to access this attachment");
-            }
+        Attachment attachment = attachmentService.getAttachmentById(id);
 
-            Resource resource = (Resource) attachmentService.loadFileAsResource(attachment);
-
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(attachment.getMimeType()))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + attachment.getFileName() + "\"")
-                    .body(resource);
-
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+        if (!attachmentService.canUserAccessAttachment(attachment, principal)) {
+            throw new ForbiddenException("You do not have permission to access this attachment");
         }
+
+        Resource resource = attachmentService.loadFileAsResource(attachment);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(attachment.getMimeType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + attachment.getFileName() + "\"")
+                .body(resource);
+
+
     }
 
     @GetMapping("/support-request/{supportRequestId}")
@@ -80,7 +77,7 @@ public class AttachmentController {
             @PathVariable Long supportRequestId,
             Principal principal) {
 
-        SupportRequest request = supportRequestRepository.findById(supportRequestId)
+        SupportTicket request = supportTicketRepository.findById(supportRequestId)
                 .orElseThrow(() -> new EntityNotFoundException("Support request not found with ID " + supportRequestId));
 
         User currentUser = userRepository.findByEmail(principal.getName())

@@ -13,13 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "support_requests")
+@Table(name = "support_tickets")
 @Getter
 @Setter
-public class SupportRequest {
+public class SupportTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="support_request_id")
+    @Column(name="support_ticket_id")
     private Long id;
     @Column(columnDefinition="TEXT")
     private String description;
@@ -34,11 +34,22 @@ public class SupportRequest {
     @Enumerated(EnumType.STRING) private Category category = Category.OTHER;
 
     private LocalDateTime slaDueAt;
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime resolvedAt;
 
-    @OneToMany(mappedBy = "supportRequest", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "supportTicket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Attachment> attachments = new ArrayList<>();
 
+    @PreUpdate
+    void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
 }

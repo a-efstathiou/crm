@@ -1,12 +1,12 @@
 package com.aefstathiou.crm.service;
 
 import com.aefstathiou.crm.dto.UserDTO;
-import com.aefstathiou.crm.dto.UserDTOMapper;
+import com.aefstathiou.crm.mapper.UserDTOMapper;
 import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.repository.UserRepository;
-import com.aefstathiou.crm.request.RegisterRequest;
-import com.aefstathiou.crm.request.UserRolesUpdateRequest;
+import com.aefstathiou.crm.dto.request.RegisterRequest;
+import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

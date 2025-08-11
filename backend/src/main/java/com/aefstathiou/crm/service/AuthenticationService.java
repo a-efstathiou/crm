@@ -1,31 +1,20 @@
 package com.aefstathiou.crm.service;
 
-import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.exception.UnauthorizedException;
-import com.aefstathiou.crm.response.AuthenticationResponse;
+import com.aefstathiou.crm.dto.response.AuthenticationResponse;
 import com.aefstathiou.crm.enums.TokenType;
 import com.aefstathiou.crm.model.JwtToken;
 import com.aefstathiou.crm.repository.JwtTokenRepository;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.repository.UserRepository;
-import com.aefstathiou.crm.request.AuthenticationRequest;
-import com.aefstathiou.crm.request.RegisterRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.aefstathiou.crm.dto.request.AuthenticationRequest;
 import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

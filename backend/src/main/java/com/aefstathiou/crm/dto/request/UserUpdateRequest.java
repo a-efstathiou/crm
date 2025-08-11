@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.request;
+package com.aefstathiou.crm.dto.request;
 
 import lombok.*;
 

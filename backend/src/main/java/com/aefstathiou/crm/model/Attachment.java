@@ -20,8 +20,8 @@ public class Attachment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="support_request_id", nullable=false)
-    private SupportRequest supportRequest;
+    @JoinColumn(name="support_ticket_id", nullable=false)
+    private SupportTicket supportTicket;
 
     private String fileName;
     private String mimeType;

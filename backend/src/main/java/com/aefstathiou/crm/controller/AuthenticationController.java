@@ -1,19 +1,12 @@
 package com.aefstathiou.crm.controller;
 
-import com.aefstathiou.crm.request.AuthenticationRequest;
-import com.aefstathiou.crm.response.AuthenticationResponse;
+import com.aefstathiou.crm.dto.request.AuthenticationRequest;
+import com.aefstathiou.crm.dto.response.AuthenticationResponse;
 import com.aefstathiou.crm.service.AuthenticationService;
-import com.aefstathiou.crm.service.JwtService;
-import com.aefstathiou.crm.request.RegisterRequest;
-import com.aefstathiou.crm.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
