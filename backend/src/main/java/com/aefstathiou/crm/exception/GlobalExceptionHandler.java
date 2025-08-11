@@ -52,13 +52,6 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGeneralException(Exception ex) {
-        logger.trace("Unexpected error", ex);
-        ApiError error = new ApiError("INTERNAL_ERROR","An unexpected error occurred.");
-        return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ApiError> handleForbiddenException(ForbiddenException ex) {
         logger.warn("Access denied: {}", ex.getMessage());
@@ -78,5 +71,19 @@ public class GlobalExceptionHandler{
         logger.warn("Error on file upload: {}", ex.getMessage());
         ApiError error = new ApiError("INTERNAL_SERVER_ERROR", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiError> handleUnauthorizedException(UnauthorizedException ex) {
+        logger.warn("Unauthorized exception: {}", ex.getMessage());
+        ApiError error = new ApiError("UNAUTHORIZED", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleGeneralException(Exception ex) {
+        logger.trace("Unexpected error", ex);
+        ApiError error = new ApiError("INTERNAL_ERROR","An unexpected error occurred.");
+        return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

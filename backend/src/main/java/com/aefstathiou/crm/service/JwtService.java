@@ -1,9 +1,11 @@
 package com.aefstathiou.crm.service;
 
+import com.aefstathiou.crm.repository.JwtTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.crypto.SecretKey;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     @Value("${com.aefstathiou.jwt-secret}")
@@ -25,18 +28,22 @@ public class JwtService {
     @Value("${com.aefstathiou.jwt-refresh-token-expiration}")
     private long refreshExpiration;
 
+    private final JwtTokenRepository jwtTokenRepository;
+
     public String extractUsername(String token){
         return  extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails){
+    public String generateAccessToken(UserDetails userDetails){
+        Map<String, Object> claims = Map.of("typ", "access");
         return generateToken(new HashMap<>(),userDetails);
     }
 
     public String generateRefreshToken(
             UserDetails userDetails
     ) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+        Map<String, Object> claims = Map.of("typ", "refresh");
+        return buildToken(claims, userDetails, refreshExpiration);
     }
 
     private String buildToken(
@@ -56,7 +63,15 @@ public class JwtService {
 
     public Boolean isTokenValid(String token,UserDetails userDetails){
         final String username=extractUsername(token);
-        return (username.equals(userDetails.getUsername())&& !(isTokenExpired(token)));
+        if (!username.equals(userDetails.getUsername())) return false;
+        if (isTokenExpired(token)) return false;
+        return isTokenActiveInDb(token);
+    }
+
+    public boolean isTokenActiveInDb(String token) {
+        return jwtTokenRepository.findByToken(token)
+                .map(t -> !t.isExpired() && !t.isRevoked())
+                .orElse(false);
     }
 
     private boolean isTokenExpired(String token) {
@@ -83,5 +98,10 @@ public class JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes= Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public boolean isRefreshToken(String token) {
+        String typ = extractClaim(token, c -> c.get("typ", String.class));
+        return "refresh".equals(typ);
     }
 }

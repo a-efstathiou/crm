@@ -9,12 +9,21 @@ import java.util.Optional;
 
 public interface JwtTokenRepository extends JpaRepository<JwtToken, Integer> {
 
-    @Query(value = """
-      select t from JwtToken t inner join User u\s
-      on t.user.id = u.id\s
-      where u.id = :id and (t.expired = false or t.revoked = false)\s
-      """)
-    List<JwtToken> findAllValidTokenByUser(Long id);
+    @Query("""
+      select t from JwtToken t
+      where t.user.id = :userId
+        and t.tokenType = com.aefstathiou.crm.enums.TokenType.ACCESS
+        and t.expired = false
+        and t.revoked = false
+    """)
+    List<JwtToken> findAllValidAccessTokensByUser(Long userId);
 
     Optional<JwtToken> findByToken(String token);
+
+    @Query("""
+      select t from JwtToken t
+      where t.token = :token
+        and t.tokenType = com.aefstathiou.crm.enums.TokenType.REFRESH
+    """)
+    Optional<JwtToken> findRefreshToken(String token);
 }

@@ -18,7 +18,8 @@ public class JwtToken {
     public String token;
 
     @Enumerated(EnumType.STRING)
-    public TokenType tokenType = TokenType.BEARER;
+    @Column(name = "token_type", nullable = false, length = 20)
+    public TokenType tokenType;
 
     public boolean revoked;
 
