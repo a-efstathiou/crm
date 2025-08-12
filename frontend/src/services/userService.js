@@ -4,7 +4,7 @@ class UserService {
     
     getUserByEmail(email){
         return api
-        .get("/users/email/"+email)
+        .get("/v1/users/email/"+email)
         .then(response => {
           return response.data;
         })
@@ -16,7 +16,7 @@ class UserService {
 
     getUserById(id){
         return api
-        .get("/users/id/"+id)
+        .get("/v1/users/id/"+id)
         .then(response => {
           return response.data;
         })
@@ -28,7 +28,7 @@ class UserService {
 
     getAllUsers(){
         return api
-        .get("/users/getAllUsers")
+        .get("/v1/users/getAllUsers")
         .then(response => {
             return response.data;
         })
@@ -40,7 +40,7 @@ class UserService {
 
     editUserRole(id,role){
         return api
-        .put("/users/"+id,{
+        .put("/v1/users/"+id,{
             role
         })
         .then(response => {
@@ -54,7 +54,7 @@ class UserService {
 
     getAllRoles(){
         return api
-        .get("/users/getAllRoles")
+        .get("/v1/users/getAllRoles")
         .then(response => {
             return response.data;
         })

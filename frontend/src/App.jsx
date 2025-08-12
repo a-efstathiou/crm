@@ -43,13 +43,13 @@ function App() {
                             setUser(localUser);
                             setIsLoggedIn(refreshPageService.getIsLoggedIn());
                             setFirstName(localUser.firstName);
+                            console.log("localUser:", localUser);
                         }
                     }).catch((error) => {
-                    // Handle any errors during fetching
-                    console.error("Error fetching localUser:", error);
-                })
+                        // Handle any errors during fetching
+                        console.error("Error fetching localUser:", error);
+                    })
                     .finally(() => {
-                        console.log("user: ",user);
                         setIsLoading(false);
                     });
 

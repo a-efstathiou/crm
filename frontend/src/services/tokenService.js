@@ -1,33 +1,27 @@
 class TokenService {
-    constructor() {
-        this.accessToken = null;
-    }
 
     getLocalRefreshToken() {
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem("tokens"));
         return user?.refresh_token;
     }
 
     getLocalAccessToken() {
-        return this.accessToken;
+        const user = JSON.parse(localStorage.getItem("tokens"));
+        return user?.access_token;
     }
 
-    updateLocalAccessToken(token) {
-        this.accessToken = token;
+    getTokens() {
+        return JSON.parse(localStorage.getItem("tokens"));
     }
 
-    getUser() {
-        return JSON.parse(localStorage.getItem("user"));
+    setTokens(user) {
+        const {...userData} = user;
+        localStorage.setItem("tokens", JSON.stringify(userData));
+        console.log("tokens", JSON.stringify(userData));
     }
 
-    setUser(user) {
-        const { access_token, ...userData } = user;
-        localStorage.setItem("user", JSON.stringify(userData));
-        this.updateLocalAccessToken(access_token);
-    }
-
-    removeUser() {
-        localStorage.removeItem("user");
+    removeTokens() {
+        localStorage.removeItem("tokens");
     }
 }
 

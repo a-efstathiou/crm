@@ -3,15 +3,16 @@ import TokenService from "./tokenService.js";
 
 class AuthService {
   access_token;
+  refresh_token;
   login(email, password) {
     return api
-      .post("/auth/authenticate", {
+      .post("/v1/auth/authenticate", {
         email,
         password
       })
       .then(response => {
         if (response.data.access_token) {
-          TokenService.setUser(response.data);
+          TokenService.setTokens(response.data);
         }
 
         return response.data;
@@ -21,22 +22,12 @@ class AuthService {
   }
 
   logout() {
-    TokenService.removeUser();
-    return api.get("/auth/logout");
-  }
-
-  register(firstName,lastName, email, password, role ="USER") {
-    return api.post("/auth/register", {
-      firstName,
-      lastName,
-      email,
-      password,
-      role
-    });
+    TokenService.removeTokens();
+    return api.get("/v1/auth/logout");
   }
 
   getCurrentUser() {
-    return TokenService.getUser();
+    return TokenService.getTokens();
   }
 
 
