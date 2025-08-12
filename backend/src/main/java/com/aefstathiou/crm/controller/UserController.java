@@ -3,7 +3,8 @@ package com.aefstathiou.crm.controller;
 import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.dto.UserDTO;
-import com.aefstathiou.crm.request.UserRolesUpdateRequest;
+import com.aefstathiou.crm.dto.request.RegisterRequest;
+import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
 import com.aefstathiou.crm.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,14 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateUserRoles(@PathVariable("userId") long id, @RequestBody UserRolesUpdateRequest request) {
         userService.updateUserRoles(id, request);
-        return ResponseEntity.ok("User's roles updated") ;
+        return ResponseEntity.ok("User's role updated") ;
     }
+
+    @PostMapping("/createUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDTO> createUser(@RequestBody RegisterRequest registerRequest) {
+        UserDTO userDTO = userService.createUser(registerRequest);
+        return ResponseEntity.ok(userDTO);
+    }
+
 }

@@ -1,10 +1,9 @@
-package com.aefstathiou.crm.request;
+package com.aefstathiou.crm.dto.request;
 
 import com.aefstathiou.crm.enums.Role;
 import lombok.Data;
-import java.util.List;
 
 @Data
 public class UserRolesUpdateRequest {
-    private List<Role> roles;
+    private Role role;
 }

@@ -1,4 +1,4 @@
-package com.aefstathiou.crm.response;
+package com.aefstathiou.crm.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

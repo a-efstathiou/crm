@@ -27,26 +27,23 @@ public class User implements UserDetails {
     private String lastName;
     private String password;
     private String email;
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "roles")
-    private List<Role> roles;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
     @OneToMany(mappedBy = "user")
     private List<JwtToken> jwtTokens;
 
-    public User(String firstName, String lastName, String password, String email,List<Role> roles) {
+    public User(String firstName, String lastName, String password, String email,Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
-        this.roles=roles;
+        this.role=role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override

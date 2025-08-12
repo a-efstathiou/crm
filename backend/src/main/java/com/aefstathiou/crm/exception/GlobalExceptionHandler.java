@@ -52,6 +52,34 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ApiError> handleForbiddenException(ForbiddenException ex) {
+        logger.warn("Access denied: {}", ex.getMessage());
+        ApiError error = new ApiError("ACCESS_DENIED", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(FileValidationException.class)
+    public ResponseEntity<ApiError> handleFileValidationException(FileValidationException ex) {
+        logger.warn("Invalid file upload: {}", ex.getMessage());
+        ApiError error = new ApiError("INVALID_FILE", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileStorageException.class)
+    public ResponseEntity<ApiError> handleFileStorageException(FileStorageException ex) {
+        logger.warn("Error on file upload: {}", ex.getMessage());
+        ApiError error = new ApiError("INTERNAL_SERVER_ERROR", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiError> handleUnauthorizedException(UnauthorizedException ex) {
+        logger.warn("Unauthorized exception: {}", ex.getMessage());
+        ApiError error = new ApiError("UNAUTHORIZED", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneralException(Exception ex) {
         logger.trace("Unexpected error", ex);

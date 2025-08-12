@@ -39,3 +39,6 @@ build/
 /src/main/resources/secrets.properties
 ./.idea
 /.idea/
+
+/uploads/
+/backend/uploads/
