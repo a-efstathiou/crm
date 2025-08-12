@@ -8,7 +8,7 @@ function Sidebar({collapsed, setCollapsed}) {
     const { isLoggedIn, isAdmin } = useContext(UserContext);
 
     const toggleSidebar = () => setCollapsed(!collapsed);
-    
+
     return (
         <div className={`sidebar d-flex flex-column flex-shrink-0 p-3 ${collapsed ? 'collapsed' : ''}`}>
             <button className="toggle-btn" onClick={toggleSidebar}>
@@ -16,8 +16,8 @@ function Sidebar({collapsed, setCollapsed}) {
             </button>
 
             <div className="p-3">
-                <h4 className="logo-text">NexusFlow</h4>
-                <p className="text-muted small hide-on-collapse">Dashboard</p>
+                <h4 className="logo-text">TicketFlow</h4>
+                <p className="small hide-on-collapse">Ticket Management System</p>
             </div>
 
             <Nav className="sidebar-nav navbar-nav-scroll">

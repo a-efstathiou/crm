@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SupportRequests = () => {
+const SupportTickets = () => {
     return (
         <div style={styles.container}>
             <h1 style={styles.heading}>SupportRequests</h1>
@@ -24,4 +24,4 @@ const styles = {
     },
 };
 
-export default SupportRequests;
+export default SupportTickets;

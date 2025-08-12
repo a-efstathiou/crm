@@ -10,7 +10,9 @@ function TopNav() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const { isLoggedIn, isAdmin } = useContext(UserContext);
+    const { isLoggedIn, role } = useContext(UserContext);
+
+    const isAdmin = role === "ROLE_ADMIN";
 
     return (
         <>
@@ -19,7 +21,7 @@ function TopNav() {
                     <Button variant="outline-light" className="d-md-none me-2" onClick={handleShow}>
                         <i className="bi bi-list"></i>
                     </Button>
-                    <Navbar.Brand className="fw-bold brand-text" href="#">NexusFlow</Navbar.Brand>
+                    <Navbar.Brand className="fw-bold brand-text" href="#">TicketFlow</Navbar.Brand>
                     <Nav className="ms-auto d-none d-md-flex topnav-links">
                         <Nav.Link href="#">Help</Nav.Link>
                         <Nav.Link href="#">Settings</Nav.Link>
