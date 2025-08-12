@@ -2,11 +2,10 @@ package com.aefstathiou.crm.service;
 
 import com.aefstathiou.crm.dto.UserDTO;
 import com.aefstathiou.crm.mapper.UserDTOMapper;
-import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.model.UserSpecifications;
 import com.aefstathiou.crm.repository.UserRepository;
-import com.aefstathiou.crm.dto.request.RegisterRequest;
+import com.aefstathiou.crm.dto.request.UserCreateRequest;
 import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,9 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,18 +27,18 @@ public class UserService {
     private final UserDTOMapper userDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDTO createUser(RegisterRequest registerRequest) {
-        Optional<User> mailOptional= userRepository.findByEmail(registerRequest.getEmail());
+    public UserDTO createUser(UserCreateRequest userCreateRequest) {
+        Optional<User> mailOptional= userRepository.findByEmail(userCreateRequest.getEmail());
         if(mailOptional.isPresent()){
             throw new IllegalArgumentException("The email is already used");
         }
 
         User user = User.builder()
-                .firstName(registerRequest.getFirstName())
-                .lastName(registerRequest.getLastName())
-                .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(Role.CUSTOMER)
+                .firstName(userCreateRequest.getFirstName())
+                .lastName(userCreateRequest.getLastName())
+                .email(userCreateRequest.getEmail())
+                .password(passwordEncoder.encode(userCreateRequest.getPassword()))
+                .role(userCreateRequest.getRole())
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -58,11 +55,11 @@ public class UserService {
         return userPage.map(userDTOMapper);
     }
 
-    public void deleteUser(String email){
-        if(userRepository.findByEmail(email).isEmpty()){
+    public void deleteUser(Long id){
+        if(userRepository.findById(id).isEmpty()){
             throw new IllegalArgumentException("The given user does not exist");
         }
-        userRepository.deleteByEmail(email);
+        userRepository.deleteById(id);
     }
 
     public Optional<UserDTO> getUserByEmail(String email){
