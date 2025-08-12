@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./tokenService.js";
 
 const instance = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: "http://localhost:8080/api/v1",
     headers: {
         "Content-Type": "application/json",
     },
@@ -12,7 +12,7 @@ instance.interceptors.request.use(
     (config) => {
         const token = TokenService.getLocalAccessToken();
         if (token) {
-            config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
+            config.headers["Authorization"] = 'Bearer ' + token;
         }
         return config;
     },

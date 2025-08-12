@@ -1,0 +1,85 @@
+.login-page {
+    background-color: #F4F4F9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 1rem;
+}
+
+.login-card {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-height: 100%;
+    max-width: 450px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #B8DBD9;
+}
+
+.login-card .card-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.login_title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #031926; /* Dark navy */
+    margin-bottom: 0.5rem;
+}
+
+.login_subtitle {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #031926;
+}
+
+.custom-fields-2 {
+    background-color: #F4F4F9;
+    border: 1px solid #B8DBD9;
+    color: #000;
+}
+
+.custom-fields-2:focus {
+    border-color: #468189;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.custom-eye-Btn {
+    background-color: #E4F1EF;
+    border-color: #468189;
+    color: #031926;
+}
+
+.custom-eye-Btn:hover {
+    background-color: #468189;
+    color: white;
+}
+
+.custom-btn-2 {
+    background-color: #031926;
+    color: white;
+    border: none;
+    width: 100%;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.custom-btn-2:hover {
+    background-color: #062c3b;
+}
+
+.info-text {
+    font-size: 0.8rem;
+    color: #888;
+}

@@ -1,0 +1,125 @@
+:root {
+    --sidebar-width: 280px;
+    --sidebar-width-collapsed: 80px;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100%;
+    /*background: linear-gradient(135deg, #1a1c2e, #16181f);*/
+    transition: width 0.3s ease;
+    background-color: #031926;
+    color: #B8DBD9;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    overflow-x: hidden;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    color: #B8DBD9;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-link:hover {
+    background-color: #113740;
+}
+
+.sidebar-link.active {
+    background-color: #F0386B;
+    color: #F4F4F9;
+}
+
+.sidebar.collapsed .sidebar-link {
+    justify-content: center;
+    padding: 1rem 0;
+    text-align: center;
+    flex-direction: column; /* Stack icon and text if needed */
+}
+
+.sidebar.collapsed .sidebar-link i {
+    font-size: 1.2rem;
+    margin: 0 auto;
+    display: block;
+}
+
+.sidebar.collapsed .sidebar-link span {
+    display: none;
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-width-collapsed);
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    align-self: flex-end;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.sidebar-link {
+    display: flex !important;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #a0a3bd;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-link i {
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    margin-right: 0.9rem;
+}
+
+.sidebar-link span {
+    margin-left: 0.5rem;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.sidebar-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.hide-on-collapse {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .hide-on-collapse {
+    opacity: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    background: linear-gradient(45deg, #6b8cff, #8b9fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+}
