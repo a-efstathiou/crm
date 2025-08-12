@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +29,7 @@ public class SupportTicketController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public SupportTicketDTO create(
+    public SupportTicketDTO createSupportTicket(
             @Valid @RequestPart("ticket") SupportTicketCreateRequest ticket,
             @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
             Principal principal
@@ -37,12 +38,12 @@ public class SupportTicketController {
     }
 
     @GetMapping("/{id}")
-    public SupportTicketDTO getById(@PathVariable Long id) {
+    public SupportTicketDTO getSupportTicketById(@PathVariable Long id) {
         return supportTicketService.getById(id);
     }
 
     @GetMapping
-    public Page<SupportTicketDTO> list(
+    public Page<SupportTicketDTO> getSupportTicketList(
             @RequestParam(required = false) Status status,
             @RequestParam(required = false) Long requesterId,
             @RequestParam(required = false) Long assignedToId,
@@ -52,7 +53,7 @@ public class SupportTicketController {
     }
 
     @PatchMapping("/{id}")
-    public SupportTicketDTO update(
+    public SupportTicketDTO updateSupportTicket(
             @PathVariable Long id,
             @Valid @RequestBody SupportTicketUpdateRequest update
     ) {
@@ -61,7 +62,8 @@ public class SupportTicketController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteSupportTicket(@PathVariable Long id) {
         supportTicketService.delete(id);
     }
 
