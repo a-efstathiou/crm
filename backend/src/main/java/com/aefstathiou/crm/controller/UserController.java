@@ -7,6 +7,8 @@ import com.aefstathiou.crm.dto.request.RegisterRequest;
 import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
 import com.aefstathiou.crm.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,14 +26,19 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(path = "/email/{encodedEmail}")
-    public Optional<UserDTO> getUserbyEmail(@PathVariable("encodedEmail") String encodedEmail) {
+    public Optional<UserDTO> getUserByEmail(@PathVariable("encodedEmail") String encodedEmail) {
         return userService.getUserByEmail(encodedEmail);
     }
 
     @GetMapping(path="/getAllUsers")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UserDTO> getUsers(){
-        return userService.getAllUsers();
+    public Page<UserDTO> getUsers(
+            Pageable pageable,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String email
+    ) {
+        return userService.getAllUsers(pageable, firstName, lastName, email);
     }
 
     @DeleteMapping(path="{email}")

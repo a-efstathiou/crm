@@ -4,12 +4,16 @@ import com.aefstathiou.crm.dto.UserDTO;
 import com.aefstathiou.crm.mapper.UserDTOMapper;
 import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.model.User;
+import com.aefstathiou.crm.model.UserSpecifications;
 import com.aefstathiou.crm.repository.UserRepository;
 import com.aefstathiou.crm.dto.request.RegisterRequest;
 import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,11 +50,12 @@ public class UserService {
         return userDTOMapper.apply(savedUser);
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(userDTOMapper)
-                .collect(Collectors.toList());
+    public Page<UserDTO> getAllUsers(Pageable pageable, String firstName, String lastName,String email) {
+        Specification<User> spec = UserSpecifications.findByCriteria(firstName, lastName, email);
+
+        // Use the new repository method that accepts a Specification
+        Page<User> userPage = userRepository.findAll(spec, pageable);
+        return userPage.map(userDTOMapper);
     }
 
     public void deleteUser(String email){
