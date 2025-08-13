@@ -1,18 +1,25 @@
-import React, {useContext} from 'react';
-import {Nav} from 'react-bootstrap';
+import React, {useContext, useState} from 'react';
+import {Collapse, Nav} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { UserContext } from './UserContext.jsx';
+import {checkIfHasRole} from "../utils/roleUtils.js";
 import '../style/Sidebar.css';
 
 function Sidebar({collapsed, setCollapsed}) {
-    const { isLoggedIn, isAdmin } = useContext(UserContext);
+    const { isLoggedIn, role } = useContext(UserContext);
+    const [isAdminOpen, setAdminOpen] = useState(false); // State to control the admin dropdown
 
-    const toggleSidebar = () => setCollapsed(!collapsed);
+    const toggleSidebar = () => {
+        setCollapsed(!collapsed);
+        if (!collapsed) {
+            setAdminOpen(false); // Collapse admin section when sidebar collapses
+        }
+    }
 
     return (
         <div className={`sidebar d-flex flex-column flex-shrink-0 p-3 ${collapsed ? 'collapsed' : ''}`}>
             <button className="toggle-btn" onClick={toggleSidebar}>
-                <i className={`bi ${collapsed ? 'bi-chevron-right' : 'bi-chevron-left'}`}></i>
+                <i className={`bi bi-chevron-left toggle-arrow ${collapsed ? 'rotated' : ''}`}></i>
             </button>
 
             <div className="p-3">
@@ -27,39 +34,39 @@ function Sidebar({collapsed, setCollapsed}) {
                         <span className="hide-on-collapse">Dashboard</span>
                     </Nav.Link>
                 </LinkContainer>
-                {isLoggedIn && isAdmin && (
+                {isLoggedIn && checkIfHasRole(role, "ROLE_ADMIN") && (
                     <>
-                        <LinkContainer to="/admin/users">
-                            <Nav.Link className="sidebar-link">
-                                <i className="bi bi-people"></i>
-                                <span className="hide-on-collapse">Users</span>
-                            </Nav.Link>
-                        </LinkContainer>
-                        <LinkContainer to="/admin/requests">
-                            <Nav.Link className="sidebar-link">
-                                <i className="bi bi-box"></i>
-                                <span className="hide-on-collapse">Support</span>
-                            </Nav.Link>
-                        </LinkContainer>
+                        <Nav.Link
+                            onClick={() => !collapsed && setAdminOpen(!isAdminOpen)}
+                            aria-controls="admin-collapse-text"
+                            aria-expanded={isAdminOpen}
+                            className="sidebar-link"
+                            disabled={collapsed}
+                        >
+                            <i className="bi bi-person-rolodex"></i>
+                            <span className="hide-on-collapse">Admin Panel</span>
+                            {!collapsed && <i className={`bi bi-chevron-down ms-auto arrow-icon ${isAdminOpen ? 'rotate-180' : ''}`}></i>}
+                        </Nav.Link>
+
+                        {/* Collapsible Admin Links */}
+                        <Collapse in={!collapsed && isAdminOpen}>
+                            <div id="admin-collapse-text">
+                                <LinkContainer to="/admin/users">
+                                    <Nav.Link className="sidebar-link admin-sub-link">
+                                        <i className="bi bi-people"></i>
+                                        <span className="hide-on-collapse">Users</span>
+                                    </Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to="/admin/tickets">
+                                    <Nav.Link className="sidebar-link admin-sub-link">
+                                        <i className="bi bi-box"></i>
+                                        <span className="hide-on-collapse">Support Tickets</span>
+                                    </Nav.Link>
+                                </LinkContainer>
+                            </div>
+                        </Collapse>
                     </>
                 )}
-                <div>
-                    {isLoggedIn ? (
-                        <LinkContainer to="/profile">
-                            <Nav.Link className="sidebar-link">
-                                <i className="bi bi-person-circle"></i>
-                                <span className="hide-on-collapse">My Profile</span>
-                            </Nav.Link>
-                        </LinkContainer>
-                    ) : (
-                        <LinkContainer to="/login">
-                            <Nav.Link className="sidebar-link">
-                                <i className="bi bi-box-arrow-in-right"></i>
-                                <span className="hide-on-collapse">Login</span>
-                            </Nav.Link>
-                        </LinkContainer>
-                    )}
-                </div>
             </Nav>
         </div>
     );

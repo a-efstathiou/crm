@@ -35,3 +35,57 @@
     color: white;
 }
 
+.admin-sub-link-offcanvas {
+    padding-left: 2.5rem !important;
+}
+
+.arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+.arrow-icon.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.sidebar-offcanvas .nav-link:focus {
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+    color: #a0a3bd !important;
+}
+
+.top-nav .dropdown-menu {
+    background-color: #031926;
+    border: 1px solid #1f7a8c;
+    margin-top: 0.5rem !important;
+}
+
+.top-nav .dropdown-item {
+    color: #B8DBD9;
+    background-color: transparent;
+}
+
+.top-nav .dropdown-item:hover,
+.top-nav .dropdown-item:focus {
+    color: #F0386B;
+    background-color: rgba(31, 122, 140, 0.2);
+}
+
+.top-nav .dropdown-divider {
+    border-top: 1px solid #1f7a8c;
+    opacity: 0.5;
+}
+
+.top-nav .dropdown-toggle::after {
+    display: none !important;
+}
+
+.offcanvas-sub-link {
+    padding-left: 2.5rem !important;
+}
+.offcanvas-divider {
+    border-top: 1px solid #1f7a8c;  /* Use your existing teal border color */
+    opacity: 0.5;                   /* Match the dropdown divider's opacity */
+    margin: 0.5rem 0;               /* Add some vertical spacing */
+}
+

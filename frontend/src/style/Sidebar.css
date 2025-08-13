@@ -1,6 +1,6 @@
 :root {
     --sidebar-width: 280px;
-    --sidebar-width-collapsed: 80px;
+    --sidebar-width-collapsed: 90px;
 
     /* color palette */
     --clr-navy: #031926;
@@ -10,11 +10,9 @@
     --clr-pink: #F0386B;
 }
 
-/* Sidebar base */
 .sidebar {
     width: var(--sidebar-width);
     height: 100%;
-    transition: width 0.3s ease;
     background-color: var(--clr-navy);
     color: var(--clr-aqua);
     overflow-y: auto;
@@ -35,37 +33,49 @@
     color: var(--clr-aqua);
     padding: 0.75rem 1rem;
     border-radius: 6px;
-    transition: background-color 0.2s ease, color 0.2s ease;
     font-weight: 500;
     text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .nav-link.sidebar-link i {
     margin-right: 0.5rem;
-    color: inherit; /* icon follows link color */
+    color: inherit;
     flex-shrink: 0;
 }
 
 .nav-link.sidebar-link span {
-    color: inherit; /* text follows link color */
+    color: inherit;
 }
 
-/* Hover: light aqua background + pink text/icon */
+
 .nav-link.sidebar-link:hover {
     background-color: var(--clr-aqua) !important;
     color: var(--clr-pink) !important;
+    outline: none;
+    box-shadow: none;
+}
+
+.nav-link.sidebar-link:focus {
+    background-color: transparent !important;
+    color: var(--clr-aqua) !important;
+    outline: none;
+    box-shadow: none;
 }
 
 .nav-link.sidebar-link.active {
     background-color: var(--clr-teal) !important;
-    color: var(--clr-light) !important; /* light text/icons */
+    color: var(--clr-light) !important;
 }
 
-/* Collapsed mode */
+.nav-link.admin-sub-link {
+    padding-left: 2.5rem;
+}
+
 .sidebar.collapsed .sidebar-link {
     justify-content: center;
     padding: 1rem 0;
-    flex-direction: column;
 }
 
 .sidebar.collapsed .sidebar-link i {
@@ -75,10 +85,6 @@
 
 .sidebar.collapsed .sidebar-link span {
     display: none;
-}
-
-.hide-on-collapse {
-    transition: opacity 0.3s ease;
 }
 
 .sidebar.collapsed .hide-on-collapse {
@@ -98,31 +104,41 @@
     cursor: pointer;
 }
 
-/* Sidebar nav layout */
 .sidebar-nav {
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
 }
 
-/* Optional logo text */
 .logo-text {
     font-size: 1.5rem;
     background: linear-gradient(45deg, #6b8cff, #8b9fff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    transition: opacity 0.3s ease;
 }
 
 .sidebar.collapsed .logo-text {
     opacity: 0;
 }
 
-.sidebar.expanding,
-.sidebar.collapsing {
-    overflow-y: hidden; /* while animating */
+.arrow-icon {
+    transition: transform 0.3s ease;
 }
 
-.sidebar.expanded {
-    overflow-y: auto; /* once fully open */
+.arrow-icon.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.sidebar-link[disabled] {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.toggle-arrow {
+    transition: transform 0.3s ease;
+    display: inline-block; /* Helps ensure transform works consistently */
+}
+
+.toggle-arrow.rotated {
+    transform: rotate(180deg); /* Rotate it to point to the right */
 }

@@ -55,11 +55,11 @@ function App() {
 
     }, []); // <-- The empty array means this effect runs only once on mount
 
-    // useEffect(() => {
-    //     if(user !== ""){
-    //         refreshPageService.onPageRefresh(isLoggedIn,user.id);
-    //     }
-    // },[isLoggedIn,user])
+    useEffect(() => {
+        if(user !== ""){
+            refreshPageService.onPageRefresh(isLoggedIn,user.id);
+        }
+    },[isLoggedIn,user])
 
     useEffect(() => {
         const handleResize = () => {

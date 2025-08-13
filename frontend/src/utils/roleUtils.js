@@ -21,3 +21,8 @@ export const formatRoleForAPI = (displayString) => {
     if (!displayString) return '';
     return displayString.replace(/ /g, '_').trim();
 };
+
+
+export const checkIfHasRole = (currentRole, roleToCheck) => {
+   return currentRole === roleToCheck;
+}
