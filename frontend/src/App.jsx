@@ -10,11 +10,7 @@ import Home from "./components/Home.jsx";
 import PageNotFound from "./components/PageNotFound.jsx";
 import Profile from "./components/profile/Profile.jsx";
 import UserList from "./components/admin/UserList.jsx";
-import SupportRequests from "./components/requests/SupportRequests.jsx";
-import Sidebar from "./components/Sidebar.jsx";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import SupportTickets from "./components/tickets/SupportTickets.jsx";
 import Layout from "./components/Layout.jsx";
 
 function App() {
@@ -23,8 +19,7 @@ function App() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState("");
-    const [isAdmin,setIsAdmin] = useState(false);
-    const [isInspector,setIsInspector] = useState(false);
+    const [role,setRole] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(true);
     const [showSidebar, setShowSidebar] = useState(window.innerWidth >= 768);
@@ -32,33 +27,33 @@ function App() {
     const hasRun = useRef(false);
 
     useEffect(() => {
-        setIsLoading(true);
-        if(!hasRun.current){
-            if(refreshPageService.getReload() === 'true'){
-                hasRun.current = true;
-
-                refreshPageService.onPageLoad()
-                    .then((localUser) => {
-                        if (localUser != null) {
-                            setUser(localUser);
-                            setIsLoggedIn(refreshPageService.getIsLoggedIn());
-                            setFirstName(localUser.firstName);
-                        }
-                    }).catch((error) => {
-                    // Handle any errors during fetching
-                    console.error("Error fetching localUser:", error);
-                })
-                    .finally(() => {
-                        console.log("user: ",user);
-                        setIsLoading(false);
-                    });
-
-            }
-            refreshPageService.setReload(true);
-
+        if(hasRun.current)return;
+        if (refreshPageService.getReload() === 'true') {
+            hasRun.current = true;
+            refreshPageService.onPageLoad()
+                .then((localUser) => {
+                    if (localUser != null) {
+                        // Use the fetched 'localUser' directly to update all related state
+                        setUser(localUser);
+                        setIsLoggedIn(refreshPageService.getIsLoggedIn());
+                        setFirstName(localUser.firstName);
+                        setRole(localUser.authorities?.[0] || null); // Safely access authorities
+                        console.log(localUser);
+                    }
+                }).catch((error) => {
+                // Handle any errors during fetching
+                console.error("Error fetching localUser:", error);
+            })
+                .finally(() => {
+                    // This is guaranteed to run after the promise settles (either then or catch)
+                    setIsLoading(false);
+                });
+        } else {
+            setIsLoading(false); // If not refreshing, we are not loading
         }
+        refreshPageService.setReload(true);
 
-    }, [user]);
+    }, []); // <-- The empty array means this effect runs only once on mount
 
     useEffect(() => {
         if(user !== ""){
@@ -83,10 +78,8 @@ function App() {
                         setIsLoggedIn,
                         user,
                         setUser,
-                        isAdmin,
-                        setIsAdmin,
-                        isInspector,
-                        setIsInspector,
+                        role,
+                        setRole,
                         firstName,
                         setFirstName
                     }}
@@ -108,22 +101,22 @@ function App() {
                                 element={
                                     <ProtectedRoute
                                         isLoading={isLoading}
-                                        isAuthenticated={isLoggedIn}
-                                        hasPermission={isAdmin}
+                                        requiredRoles={["ROLE_ADMIN"]}
+                                        isLoggedIn={isLoggedIn}
                                     >
                                         <UserList />
                                     </ProtectedRoute>
                                 }
                             />
                             <Route
-                                path="/admin/requests"
+                                path="/admin/tickets"
                                 element={
                                     <ProtectedRoute
                                         isLoading={isLoading}
-                                        isAuthenticated={isLoggedIn}
-                                        hasPermission={isAdmin}
+                                        requiredRoles={["ROLE_ADMIN", "ROLE_SUPPORT_AGENT", "ROLE_SUPERVISOR"]}
+                                        isLoggedIn={isLoggedIn}
                                     >
-                                        <SupportRequests />
+                                        <SupportTickets />
                                     </ProtectedRoute>
                                 }
                             />

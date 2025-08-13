@@ -13,7 +13,6 @@ class RefreshPageService {
         if(id != null){
             this.saveId(id);
         }
-
     }
 
     onPageLoad(){

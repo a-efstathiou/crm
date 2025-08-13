@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./tokenService.js";
 
 const instance = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
+    baseURL: "http://localhost:8080/api/",
     headers: {
         "Content-Type": "application/json",
     },
@@ -28,22 +28,18 @@ instance.interceptors.response.use(
     async (err) => {
         const originalConfig = err.config;
 
-        if (originalConfig.url !== "/auth/authenticate" && err.response) {
-            // Access Token was expired
+        if (originalConfig.url !== "/v1/auth/authenticate" && err.response) {
             if (err.response.status === 403 && !originalConfig._retry) {
                 originalConfig._retry = true;
 
                 try {
-                    const rs = await instance.post("/auth/refresh-token",{}, {
+                    const rs = await instance.post("/v1/auth/refresh-token",{}, {
                         headers: {
                             'Authorization': 'Bearer '+TokenService.getLocalRefreshToken()
                         }
                     });
 
-
-                    const { access_token } = rs.data;
-                    TokenService.updateLocalAccessToken(access_token);
-
+                    TokenService.setTokens(rs.data);
                     return instance(originalConfig);
                 } catch (_error) {
                     return Promise.reject(_error);
