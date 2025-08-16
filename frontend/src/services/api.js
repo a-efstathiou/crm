@@ -11,7 +11,13 @@ const instance = axios.create({
 instance.interceptors.request.use(
     (config) => {
         const token = TokenService.getLocalAccessToken();
-        if (token) {
+
+        const publicUrls = [
+            "/v1/auth/authenticate",
+            "/v1/auth/refresh-token"
+        ];
+
+        if (token && !publicUrls.includes(config.url)) {
             config.headers["Authorization"] = 'Bearer ' + token;
         }
         return config;
@@ -32,17 +38,25 @@ instance.interceptors.response.use(
             if (err.response.status === 403 && !originalConfig._retry) {
                 originalConfig._retry = true;
 
-                try {
-                    const rs = await instance.post("/v1/auth/refresh-token",{}, {
-                        headers: {
-                            'Authorization': 'Bearer '+TokenService.getLocalRefreshToken()
-                        }
-                    });
+                const refreshToken = TokenService.getLocalRefreshToken();
 
-                    TokenService.setTokens(rs.data);
-                    return instance(originalConfig);
-                } catch (_error) {
-                    return Promise.reject(_error);
+                if (refreshToken) {
+                    try {
+                        const rs = await instance.post("/v1/auth/refresh-token",{}, {
+                            headers: {
+                                'Authorization': 'Bearer '+TokenService.getLocalRefreshToken()
+                            }
+                        });
+
+                        TokenService.setTokens(rs.data);
+                        return instance(originalConfig);
+                    } catch (_error) {
+                        return Promise.reject(_error);
+                    }
+                }
+                else {
+                    console.log("No refresh token available. Logging out.");
+                    TokenService.removeTokens();
                 }
             }
         }

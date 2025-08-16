@@ -1,19 +1,22 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Navbar, Container, Nav, Offcanvas, Collapse, Dropdown} from 'react-bootstrap';
-import '../style/TopNav.css';
+import '../../style/TopNav.css';
 import {UserContext} from "./UserContext.jsx";
 import {LinkContainer} from "react-router-bootstrap";
 import Button from "react-bootstrap/Button";
-import {checkIfHasRole} from "../utils/roleUtils.js";
-import authService from "../services/authService.js";
+import {checkIfHasRole} from "../../utils/roleUtils.js";
+import authService from "../../services/authService.js";
 import {useNavigate} from "react-router-dom";
+import LogoImage from "./LogoImage.jsx"
 
 function TopNav() {
     const [show, setShow] = useState(false);
     const [isAdminOpen, setAdminOpen] = useState(false);
     const [isUserOpen, setUserOpen] = useState(false);
-    const { isLoggedIn, user, role, setIsLoggedIn, setUser } = useContext(UserContext);
+    const { isLoggedIn, user, role, setIsLoggedIn, setUser, appName } = useContext(UserContext);
     const navigate = useNavigate();
+
+    const logoUrl = "http://localhost:8080/api/v1/settings/logo";
 
     const handleClose = useCallback(() => {
         setShow(false);
@@ -45,7 +48,7 @@ function TopNav() {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, [show, handleClose]); // Dependency array ensures the effect has the latest 'show' state
+    }, [show, handleClose]);
 
     return (
         <>
@@ -54,9 +57,19 @@ function TopNav() {
                     <Button variant="outline-light" className="d-md-none me-2" onClick={handleShow}>
                         <i className="bi bi-list"></i>
                     </Button>
-                    <Navbar.Brand className="fw-bold brand-text" href="#">TicketFlow</Navbar.Brand>
+                    <LinkContainer to="/">
+                        <Navbar.Brand className="fw-bold brand-text d-flex align-items-center" href="#">
+                            <LogoImage
+                                src={logoUrl}
+                                alt={`${appName} logo`}
+                                height="30"
+                                className="d-inline-block align-top me-2"
+                            />
+                            {appName}
+                        </Navbar.Brand>
+                    </LinkContainer>
                     <Nav className="ms-auto d-none d-md-flex topnav-links align-items-center">
-                        <Nav.Link href="#">Help</Nav.Link>
+                        <Nav.Link href="/help">Help</Nav.Link>
 
                         {isLoggedIn ? (
                             <Dropdown align="end">
@@ -83,7 +96,6 @@ function TopNav() {
                                 </Dropdown.Menu>
                             </Dropdown>
                         ) : (
-                            // If logged out, show the Login link
                             <LinkContainer to="/login">
                                 <Nav.Link>Login</Nav.Link>
                             </LinkContainer>
@@ -102,15 +114,15 @@ function TopNav() {
                 scroll="true"
             >
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>TicketFlow</Offcanvas.Title>
+                    <Offcanvas.Title>{appName}</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body className="d-flex flex-column p-0">
-
-                    {/* === TOP SECTION (Dashboard, Admin) === */}
                     <Nav className="flex-column offcanvas-nav p-3">
-                        <LinkContainer to="/" onClick={handleClose}>
+                        {isLoggedIn && (
+                            <LinkContainer to="/" onClick={handleClose}>
                             <Nav.Link><i className="bi bi-house me-2"></i> Dashboard</Nav.Link>
                         </LinkContainer>
+                        )}
 
                         {isLoggedIn && checkIfHasRole(role, "ROLE_ADMIN") && (
                             <>
@@ -124,10 +136,16 @@ function TopNav() {
                                 <Collapse in={isAdminOpen}>
                                     <div>
                                         <LinkContainer to="/admin/users" onClick={handleClose}>
-                                            <Nav.Link className="offcanvas-sub-link"><i className="bi bi-people me-2"></i> Users</Nav.Link>
+                                            <Nav.Link className="offcanvas-sub-link">
+                                                <i className="bi bi-people me-2"></i>
+                                                Users
+                                            </Nav.Link>
                                         </LinkContainer>
-                                        <LinkContainer to="/admin/tickets" onClick={handleClose}>
-                                            <Nav.Link className="offcanvas-sub-link"><i className="bi bi-box me-2"></i> Support</Nav.Link>
+                                        <LinkContainer to="/admin/categories">
+                                            <Nav.Link className="offcanvas-sub-link">
+                                                <i className="bi bi-tags"></i>
+                                                Categories
+                                            </Nav.Link>
                                         </LinkContainer>
                                     </div>
                                 </Collapse>

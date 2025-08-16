@@ -4,14 +4,17 @@ import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.exception.FileStorageException;
 import com.aefstathiou.crm.exception.FileValidationException;
 import com.aefstathiou.crm.exception.ForbiddenException;
+import com.aefstathiou.crm.model.ApplicationSettings;
 import com.aefstathiou.crm.model.Attachment;
 import com.aefstathiou.crm.model.SupportTicket;
 import com.aefstathiou.crm.model.User;
+import com.aefstathiou.crm.repository.ApplicationSettingsRepository;
 import com.aefstathiou.crm.repository.AttachmentRepository;
 import com.aefstathiou.crm.repository.SupportTicketRepository;
 import com.aefstathiou.crm.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +35,7 @@ public class AttachmentService {
     private final SupportTicketRepository supportTicketRepository;
     private final UserRepository userRepository;
 
-    private final Path rootLocation = Paths.get("uploads"); // folder in your server
+    private final Path rootLocation = Paths.get("uploads");
 
     public Attachment storeFile(Long supportRequestId, MultipartFile file, Principal principal) {
         long maxSizeBytes = 5 * 1024 * 1024; // 5 MB
@@ -58,17 +61,13 @@ public class AttachmentService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         try {
-            // Ensure folder exists
             Files.createDirectories(rootLocation);
 
-            // Generate unique filename
             String uniqueName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path destination = rootLocation.resolve(uniqueName).normalize().toAbsolutePath();
 
-            // Save file on disk
             Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-            // Save attachment metadata
             Attachment attachment = Attachment.builder()
                     .supportTicket(request)
                     .fileName(file.getOriginalFilename())
@@ -98,6 +97,21 @@ public class AttachmentService {
             return resource;
         } catch (IOException e) {
             throw new FileStorageException("Could not retrieve file " + attachment.getFileName(), e);
+        }
+    }
+
+    public UrlResource loadFileAsResourceByPath(String storedPath){
+        try {
+            Path filePath = resolvePath(storedPath);
+            UrlResource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new FileNotFoundException("File not found or not readable: " + filePath);
+            }
+
+            return resource;
+        } catch (IOException e) {
+            throw new FileStorageException("Could not retrieve file: " + storedPath, e);
         }
     }
 
@@ -136,5 +150,40 @@ public class AttachmentService {
             throw new SecurityException("Invalid file path: " + storedPath);
         }
         return file;
+    }
+
+    public String storeLogo(MultipartFile file) {
+        long maxSizeBytes = 2 * 1024 * 1024; // 2 MB limit for logos
+        if (file.isEmpty()) {
+            throw new FileValidationException("File to upload cannot be empty");
+        }
+        if (file.getSize() > maxSizeBytes) {
+            throw new FileValidationException("Logo size exceeds the maximum allowed limit of 2 MB");
+        }
+
+        List<String> allowedExtensions = List.of("png", "jpg", "jpeg", "svg");
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || !originalFilename.contains(".")) {
+            throw new FileValidationException("Invalid file name");
+        }
+
+        String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+        if (!allowedExtensions.contains(extension)) {
+            throw new FileValidationException("Invalid file type for logo. Allowed: " + allowedExtensions);
+        }
+
+        try {
+            Files.createDirectories(rootLocation);
+
+            String uniqueName = "logo_" + UUID.randomUUID() + "." + extension;
+            Path destination = rootLocation.resolve(uniqueName).normalize().toAbsolutePath();
+
+            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+            return uniqueName;
+
+        } catch (IOException e) {
+            throw new FileStorageException("Could not store logo file " + originalFilename, e);
+        }
     }
 }

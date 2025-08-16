@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import LoadingButton from './LoadingButton';
+import LoadingButton from './LoadingButton.jsx';
 import Card from 'react-bootstrap/Card';
 import {FaEyeSlash, FaEye} from 'react-icons/fa';
 
@@ -10,12 +10,12 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import AuthService from "../services/authService.js";
-import UserService from "../services/userService.js";
+import AuthService from "../../services/authService.js";
+import UserService from "../../services/userService.js";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import '../style/Login.css';
+import '../../style/Login.css';
 import {UserContext} from "./UserContext.jsx"; // Import the external CSS file
 
 
@@ -23,19 +23,15 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [googleLogin, setGoogleLogin] = useState(false);
 
     const {setIsLoggedIn} = useContext(UserContext);
-    const {setUser} = useContext(UserContext);
+    const {setRole, setUser} = useContext(UserContext);
 
     const navigate = useNavigate();
 
     const handleButtonClick = async () => {
-        try { 
-            if(googleLogin === false){
-                await AuthService.login(email, password); // Wait for login to complete
-            }
-            setGoogleLogin(false);
+        try {
+            await AuthService.login(email, password); // Wait for login to complete
             await handleLogin();
             setIsLoggedIn(true);
             toast.success("Successful Login");
@@ -68,7 +64,7 @@ const Login = () => {
         try {
             const response = await UserService.getUserByEmail(email);
             await setUser(response);
-
+            await setRole(response?.authorities[0] || null);
             navigate("/");
         } catch (error) {
             console.log(error);

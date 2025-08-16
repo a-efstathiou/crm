@@ -2,14 +2,12 @@ package com.aefstathiou.crm.mapper;
 
 import com.aefstathiou.crm.dto.AttachmentDTO;
 import com.aefstathiou.crm.dto.SupportTicketDTO;
-import com.aefstathiou.crm.model.Attachment;
 import com.aefstathiou.crm.model.SupportTicket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Function;
-
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +28,12 @@ public class SupportTicketDTOMapper implements Function<SupportTicket, SupportTi
         return new SupportTicketDTO(
                 supportTicket.getId(),
                 supportTicket.getDescription(),
+                supportTicket.getSubject(),
                 requesterId,
                 assignedToId,
                 supportTicket.getStatus(),
                 supportTicket.getPriority(),
                 supportTicket.getCategory(),
-                supportTicket.getSlaDueAt(),
                 supportTicket.getCreatedAt(),
                 supportTicket.getUpdatedAt(),
                 supportTicket.getResolvedAt(),

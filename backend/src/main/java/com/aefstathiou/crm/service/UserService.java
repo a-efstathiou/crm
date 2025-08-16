@@ -1,21 +1,27 @@
 package com.aefstathiou.crm.service;
 
 import com.aefstathiou.crm.dto.UserDTO;
+import com.aefstathiou.crm.dto.request.UserChangePasswordRequest;
+import com.aefstathiou.crm.dto.request.UserUpdateRequest;
 import com.aefstathiou.crm.mapper.UserDTOMapper;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.model.UserSpecifications;
 import com.aefstathiou.crm.repository.UserRepository;
 import com.aefstathiou.crm.dto.request.UserCreateRequest;
 import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
+import com.aefstathiou.crm.specification.UserSpecification;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -48,10 +54,23 @@ public class UserService {
     }
 
     public Page<UserDTO> getAllUsers(Pageable pageable, String firstName, String lastName,String email) {
-        Specification<User> spec = UserSpecifications.findByCriteria(firstName, lastName, email);
+        Specification<User> finalSpec = (root, query, builder) -> null;
 
-        // Use the new repository method that accepts a Specification
-        Page<User> userPage = userRepository.findAll(spec, pageable);
+        Specification<User> firstNameSpec = UserSpecification.firstNameContains(firstName);
+        Specification<User> lastNameSpec = UserSpecification.lastNameContains(lastName);
+        Specification<User> emailSpec = UserSpecification.emailContains(email);
+
+        if (firstNameSpec != null) {
+            finalSpec = firstNameSpec;
+        }
+        if (lastNameSpec != null) {
+            finalSpec = (finalSpec != null) ? finalSpec.and(lastNameSpec) : lastNameSpec;
+        }
+        if (emailSpec != null) {
+            finalSpec = (finalSpec != null) ? finalSpec.and(emailSpec) : emailSpec;
+        }
+
+        Page<User> userPage = userRepository.findAll(finalSpec, pageable);
         return userPage.map(userDTOMapper);
     }
 
@@ -70,25 +89,15 @@ public class UserService {
         return userRepository.findById(id).map(userDTOMapper);
     }
 
-    public void updateUser(long id, User userUpd){
-        User user= userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("The User with id [%s] does not exist".formatted(id)));
-        if(userUpd.getEmail()!=null){
-            user.setEmail(userUpd.getEmail());
-        }
-        if(userUpd.getFirstName()!=null){
-            user.setFirstName(userUpd.getFirstName());
-        }
-        if(userUpd.getLastName()!=null){
-            user.setLastName(userUpd.getLastName());
-        }
-        if(userUpd.getPassword()!=null){
-            user.setPassword(userUpd.getPassword());
-        }
-        if(userUpd.getRole()!=null){
-            user.setRole(userUpd.getRole());
-        }
+    public void updateUser(long userId, UserUpdateRequest request){
+        User userToUpdate = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
 
-        userRepository.save(user);
+        userToUpdate.setFirstName(request.firstName());
+        userToUpdate.setLastName(request.lastName());
+        userToUpdate.setRole(request.role());
+
+        userRepository.save(userToUpdate);
     }
 
     public void updateUserRoles(long id, UserRolesUpdateRequest request) {
@@ -100,5 +109,24 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public void changePassword(UserChangePasswordRequest request, Principal principal)
+    {
+        var user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+            throw new IllegalStateException("Wrong password");
+        }
+
+        if (passwordEncoder.matches(request.newPassword(), user.getPassword())) {
+            throw new IllegalStateException("New password cannot be the same as the old password");
+        }
+
+        String hashedNewPassword = passwordEncoder.encode(request.newPassword());
+
+        user.setPassword(hashedNewPassword);
+        userRepository.save(user);
+    }
+
 
 }

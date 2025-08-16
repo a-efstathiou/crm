@@ -1,17 +1,21 @@
 import {useEffect, useRef, useState} from 'react'
 import './App.css'
 import refreshPageService from "./services/refreshPageService.js";
-import {UserContext} from "./components/UserContext.jsx";
+import {UserContext} from "./components/common/UserContext.jsx";
 import {ToastContainer} from "react-toastify";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Login from "./components/Login.jsx";
-import Home from "./components/Home.jsx";
-import PageNotFound from "./components/PageNotFound.jsx";
+import Login from "./components/common/Login.jsx";
+import Home from "./components/common/Home.jsx";
+import PageNotFound from "./components/common/PageNotFound.jsx";
 import Profile from "./components/profile/Profile.jsx";
 import UserList from "./components/admin/UserList.jsx";
 import SupportTickets from "./components/tickets/SupportTickets.jsx";
-import Layout from "./components/Layout.jsx";
+import Layout from "./components/common/Layout.jsx";
+import SettingsPage from "./components/settings/SettingsPage.jsx";
+import settingsService from "./services/settingsService.js";
+import CategoryList from "./components/admin/CategoryList.jsx";
+import HelpPage from "./components/common/HelpPage.jsx";
 
 function App() {
 
@@ -23,6 +27,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(true);
     const [showSidebar, setShowSidebar] = useState(window.innerWidth >= 768);
+    const [appName, setAppName] = useState('TicketFlow'); // Default name
 
     const hasRun = useRef(false);
 
@@ -41,22 +46,20 @@ function App() {
                         console.log(localUser);
                     }
                 }).catch((error) => {
-                // Handle any errors during fetching
                 console.error("Error fetching localUser:", error);
             })
                 .finally(() => {
-                    // This is guaranteed to run after the promise settles (either then or catch)
                     setIsLoading(false);
                 });
         } else {
-            setIsLoading(false); // If not refreshing, we are not loading
+            setIsLoading(false);
         }
         refreshPageService.setReload(true);
 
-    }, []); // <-- The empty array means this effect runs only once on mount
+    }, []);
 
     useEffect(() => {
-        if(user !== ""){
+        if(user && user.id){
             refreshPageService.onPageRefresh(isLoggedIn,user.id);
         }
     },[isLoggedIn,user])
@@ -67,6 +70,21 @@ function App() {
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const settings = await settingsService.getApplicationSettings();
+                if (settings.appName) {
+                    setAppName(settings.appName);
+                }
+            } catch (error) {
+                console.error("Could not fetch application settings:", error);
+            }
+        };
+
+        fetchSettings();
     }, []);
 
     return (
@@ -81,7 +99,10 @@ function App() {
                         role,
                         setRole,
                         firstName,
-                        setFirstName
+                        setFirstName,
+                        appName,
+                        setAppName,
+                        isLoading
                     }}
                 >
                     <Layout
@@ -93,7 +114,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
-                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/help" element={<HelpPage />} />
                             <Route path="*" element={<PageNotFound />} />
 
                             <Route
@@ -109,6 +130,18 @@ function App() {
                                 }
                             />
                             <Route
+                                path="/admin/categories"
+                                element={
+                                    <ProtectedRoute
+                                        isLoading={isLoading}
+                                        requiredRoles={["ROLE_ADMIN"]}
+                                        isLoggedIn={isLoggedIn}
+                                    >
+                                        <CategoryList />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
                                 path="/admin/tickets"
                                 element={
                                     <ProtectedRoute
@@ -120,6 +153,33 @@ function App() {
                                     </ProtectedRoute>
                                 }
                             />
+                            <Route
+                                path="/settings"
+                                element={
+                                    <ProtectedRoute
+                                        isLoading={isLoading}
+                                        requiredRoles={[]}
+                                        isLoggedIn={isLoggedIn}
+                                    >
+                                        <SettingsPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/profile"
+                                element={
+                                    <ProtectedRoute
+                                        isLoading={isLoading}
+                                        requiredRoles={[]}
+                                        isLoggedIn={isLoggedIn}
+                                    >
+                                        <Profile />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+
+
                         </Routes>
                     </Layout>
 

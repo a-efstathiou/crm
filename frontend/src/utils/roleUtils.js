@@ -23,6 +23,15 @@ export const formatRoleForAPI = (displayString) => {
 };
 
 
-export const checkIfHasRole = (currentRole, roleToCheck) => {
-   return currentRole === roleToCheck;
+export const checkIfHasRole = (userRole, requiredRoles) => {
+
+    if (!userRole) {
+        return false;
+    }
+
+    if (Array.isArray(requiredRoles)) {
+        return requiredRoles.includes(userRole);
+    }
+
+    return userRole === requiredRoles;
 }

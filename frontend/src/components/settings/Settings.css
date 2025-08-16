@@ -1,0 +1,118 @@
+/* This rule now only targets elements INSIDE your settings page */
+.settings-page-container .card {
+    background-color: #FFFFFF;
+    border: 1px solid #EAECEF;
+    color: #031926;
+}
+
+.settings-page-container .card-title {
+    color: #031926;
+    border-bottom: 1px solid #EAECEF;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings-page-container .form-label {
+    color: #031926;
+    font-weight: 500;
+}
+
+.settings-page-container .form-control,
+.settings-page-container .form-select {
+    background-color: #F4F4F9;
+    color: #031926;
+    border: 1px solid #ced4da;
+}
+
+.settings-page-container .form-control:focus,
+.settings-page-container .form-select:focus {
+    background-color: #FFFFFF;
+    color: #031926;
+    border-color: #1F7A8C;
+    box-shadow: 0 0 0 0.25rem rgba(31, 122, 140, 0.2);
+}
+
+.settings-page-container .form-control:disabled,
+.settings-page-container .form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
+.settings-page-container .form-text.text-muted {
+    color: #6c757d !important;
+}
+
+.settings-page-container .btn-primary {
+    background-color: #1F7A8C;
+    border-color: #1F7A8C;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+.settings-page-container .btn-primary:hover,
+.settings-page-container .btn-primary:focus {
+    background-color: #165a68;
+    border-color: #165a68;
+    color: #FFFFFF;
+    box-shadow: 0 0 0 0.25rem rgba(31, 122, 140, 0.3);
+}
+
+.settings-page-container .btn-secondary {
+    background-color: transparent;
+    border-color: #1F7A8C;
+    color: #1F7A8C;
+    font-weight: 500;
+}
+
+.settings-page-container .btn-secondary:hover,
+.settings-page-container .btn-secondary:focus {
+    background-color: #1F7A8C;
+    border-color: #1F7A8C;
+    color: #FFFFFF;
+    box-shadow: none;
+}
+
+.settings-page-container .btn-outline-secondary {
+    border-color: #1F7A8C;
+    color: #1F7A8C;
+}
+
+.settings-page-container .btn-outline-secondary:hover,
+.settings-page-container .btn-outline-secondary:focus {
+    background-color: #1F7A8C;
+    border-color: #1F7A8C;
+    color: #FFFFFF;
+}
+
+.settings-page-container .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.settings-page-container .btn-outline-danger:hover,
+.settings-page-container .btn-outline-danger:focus {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #FFFFFF;
+}
+
+.settings-page-container .nav-pills .nav-link {
+    color: #031926;
+    font-weight: 500;
+}
+
+.settings-page-container .nav-pills .nav-link.active,
+.settings-page-container .nav-pills .show > .nav-link {
+    background-color: #1F7A8C;
+    color: #FFFFFF;
+}
+
+.settings-page-container .category-name {
+    /* Allows the text to take up available space but not push the button out */
+    flex-grow: 1;
+    padding-right: 1rem; /* Add some space between the text and the delete button */
+
+    /* These two properties are the key to forcing the text to wrap */
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
