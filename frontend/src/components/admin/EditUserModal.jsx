@@ -1,52 +1,85 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { formatRoleForDisplay} from '../../utils/roleUtils.js'; // Adjust the path as needed
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { formatRoleForDisplay } from '../../utils/roleUtils.js';
 
 const EditUserModal = ({ show, onHide, user, availableRoles, onSave }) => {
-    // The modal manages its own internal state for the selected role
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
 
-    // When the user prop changes (i.e., when the modal is opened for a new user),
-    // update the internal state to match that user's current role.
     useEffect(() => {
-        if (user && user.authorities) {
-            const displayRole = formatRoleForDisplay(user.authorities[0]);
-            setSelectedRole(displayRole);
+        if (user) {
+            setFirstName(user.firstName || '');
+            setLastName(user.lastName || '');
+            if (user.authorities) {
+                const displayRole = formatRoleForDisplay(user.authorities[0]);
+                setSelectedRole(displayRole);
+            }
         }
     }, [user]);
 
     const handleSave = () => {
-        // When saving, pass the user's ID and the newly selected role back to the parent
-        onSave(user.id, selectedRole);
+        const updatedUserData = {
+            id: user.id,
+            firstName,
+            lastName,
+            role: selectedRole,
+        };
+        onSave(updatedUserData);
     };
 
     if (!user) {
-        return null; // Don't render anything if there's no user data
+        return null;
     }
 
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Role for {user.firstName} {user.lastName}</Modal.Title>
+                <Modal.Title>Edit User: {firstName} {lastName}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <p><strong>Email:</strong> {user.email}</p>
-                <Form.Group>
-                    <Form.Label>Role</Form.Label>
-                    <Form.Select
-                        value={selectedRole}
-                        onChange={(e) => setSelectedRole(e.target.value)}
-                    >
-                        {availableRoles.map(apiRole => {
-                            const displayRole = formatRoleForDisplay(apiRole);
-                            return (
-                                <option key={apiRole} value={displayRole}>
-                                    {displayRole}
-                                </option>
-                            );
-                        })}
-                    </Form.Select>
-                </Form.Group>
+                <Form>
+                    <Row>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="formFirstName">
+                                <Form.Label>First Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group className="mb-3" controlId="formLastName">
+                                <Form.Label>Last Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+
+                    <Form.Group controlId="formUserRole">
+                        <Form.Label>Role</Form.Label>
+                        <Form.Select
+                            value={selectedRole}
+                            onChange={(e) => setSelectedRole(e.target.value)}
+                        >
+                            {availableRoles.map(apiRole => {
+                                const displayRole = formatRoleForDisplay(apiRole);
+                                return (
+                                    <option key={apiRole} value={displayRole}>
+                                        {displayRole}
+                                    </option>
+                                );
+                            })}
+                        </Form.Select>
+                    </Form.Group>
+                </Form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onHide}>

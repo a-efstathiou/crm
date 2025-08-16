@@ -1,0 +1,61 @@
+.landing-page {
+    width: 100%;
+}
+
+/* --- Hero Section Styling --- */
+.hero-section {
+    background-color: #031926; /* Your Navy */
+    padding: 7rem 1.5rem;
+    /* This creates the cool angled bottom shape */
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+}
+
+.hero-title {
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.hero-subtitle {
+    max-width: 600px;
+    margin: 1.5rem auto 2.5rem;
+    opacity: 0.9;
+    color: #B8DBD9; /* Your Aqua */
+}
+
+/* Use your established primary button colors */
+.hero-button.btn-primary {
+    background-color: #1F7A8C !important; /* Teal */
+    border-color: #1F7A8C !important;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+}
+
+.hero-button.btn-primary:hover {
+    background-color: #165a68 !important; /* Darker Teal */
+    border-color: #165a68 !important;
+}
+
+
+/* --- Features Section Styling --- */
+.features-section {
+    padding: 8rem 1.5rem;
+    background-color: #FFFFFF; /* Clean white background */
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    color: #1F7A8C; /* Your Teal */
+}
+
+.feature-item h3 {
+    margin-bottom: 1rem;
+    color: #031926; /* Your Navy */
+    font-weight: 600;
+}
+
+
+/* --- Footer Styling --- */
+.footer {
+    background-color: #f8f9fa; /* A very light grey for separation */
+    padding: 2.5rem 1.5rem;
+}

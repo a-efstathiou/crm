@@ -22,3 +22,107 @@ body,
 #root {
   height: 100%;
 }
+
+.btn-primary {
+  background-color: #1F7A8C !important;
+  border-color: #1F7A8C !important;
+  color: #FFFFFF !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #165a68 !important;
+  border-color: #165a68 !important;
+}
+.btn-secondary {
+  background-color: transparent !important;
+  border-color: #1F7A8C !important;
+  color: #1F7A8C !important;
+}
+.btn-secondary:hover, .btn-secondary:focus {
+  background-color: #1F7A8C !important;
+  color: #FFFFFF !important;
+}
+.btn-danger {
+  background-color: #F0386B !important;
+  border-color: #F0386B !important;
+}
+.btn-danger:hover, .btn-danger:focus {
+  background-color: #d02d5a !important;
+  border-color: #d02d5a !important;
+}
+
+/*
+  VERSION 2: Scoped overrides for components inside #root.
+  These have slightly higher specificity for the main app content.
+*/
+#root .btn-primary {
+  background-color: #1F7A8C !important;
+  border-color: #1F7A8C !important;
+  color: #FFFFFF !important;
+  font-weight: 500 !important;
+}
+#root .btn-primary:hover, #root .btn-primary:focus {
+  background-color: #165a68 !important;
+  border-color: #165a68 !important;
+  box-shadow: 0 0 0 0.25rem rgba(31, 122, 140, 0.3) !important;
+}
+#root .btn-secondary, #root .btn-outline-primary {
+  background-color: transparent !important;
+  border-color: #1F7A8C !important;
+  color: #1F7A8C !important;
+}
+#root .btn-secondary:hover, #root .btn-secondary:focus,
+#root .btn-outline-primary:hover, #root .btn-outline-primary:focus {
+  background-color: #1F7A8C !important;
+  border-color: #1F7A8C !important;
+  color: #FFFFFF !important;
+}
+#root .btn-danger, #root .btn-outline-danger {
+  background-color: #F0386B !important;
+  border-color: #F0386B !important;
+  color: #FFFFFF !important;
+}
+#root .btn-danger:hover, #root .btn-danger:focus,
+#root .btn-outline-danger:hover, #root .btn-outline-danger:focus {
+  background-color: #d02d5a !important;
+  border-color: #d02d5a !important;
+}
+#root .btn-success, #root .btn-outline-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+#root .btn-success:hover, #root .btn-success:focus,
+#root .btn-outline-success:hover, #root .btn-outline-success:focus {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+}
+
+.pagination .page-link {
+  color: #1F7A8C !important;
+}
+.page-item.active .page-link {
+  background-color: #1F7A8C !important;
+  border-color: #1F7A8C !important;
+  color: #FFFFFF !important;
+}
+.page-link:hover {
+  background-color: #e9ecef !important;
+}
+.page-item.active .page-link:hover {
+  background-color: #165a68 !important;
+}
+.btn-check:checked + .btn-outline-primary {
+  background-color: #1F7A8C !important;
+  border-color: #1F7A8C !important;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d !important; /* Standard Bootstrap secondary grey */
+  border-color: #6c757d !important;
+  color: #FFFFFF !important;
+}
+
+.modal-footer .btn-secondary:hover,
+.modal-footer .btn-secondary:focus {
+  background-color: #5a6268 !important; /* A slightly darker grey for hover/focus */
+  border-color: #545b62 !important;
+}

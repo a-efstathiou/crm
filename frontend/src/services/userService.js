@@ -113,6 +113,44 @@ class UserService {
         });
     }
 
+    changePassword(currentPassword, newPassword){
+
+        const requestData = {
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+        };
+
+        return api
+            .post("/v1/users/changePassword", requestData)
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                console.error("Error changing password:", error);
+                throw error;
+            });
+    }
+
+    updateUser(updatedUserData){
+        const userId = updatedUserData.id;
+        const requestData = {
+            firstName: updatedUserData.firstName,
+            lastName: updatedUserData.lastName,
+            role: updatedUserData.role,
+        };
+
+        return api
+            .put(`/v1/users/${userId}`, requestData)
+            .then(response => {
+                console.log("User updated successfully:", response.data);
+                return response.data;
+            })
+            .catch(error => {
+                console.error("Error updating user:", error.response?.data || error.message);
+                throw error;
+            });
+    }
+
 }
 
 export default new UserService() ;

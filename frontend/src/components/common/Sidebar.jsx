@@ -2,17 +2,17 @@ import React, {useContext, useState} from 'react';
 import {Collapse, Nav} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { UserContext } from './UserContext.jsx';
-import {checkIfHasRole} from "../utils/roleUtils.js";
-import '../style/Sidebar.css';
+import {checkIfHasRole} from "../../utils/roleUtils.js";
+import '../../style/Sidebar.css';
 
 function Sidebar({collapsed, setCollapsed}) {
-    const { isLoggedIn, role } = useContext(UserContext);
-    const [isAdminOpen, setAdminOpen] = useState(false); // State to control the admin dropdown
+    const { isLoggedIn, role,appName } = useContext(UserContext);
+    const [isAdminOpen, setAdminOpen] = useState(false);
 
     const toggleSidebar = () => {
         setCollapsed(!collapsed);
         if (!collapsed) {
-            setAdminOpen(false); // Collapse admin section when sidebar collapses
+            setAdminOpen(false);
         }
     }
 
@@ -23,7 +23,7 @@ function Sidebar({collapsed, setCollapsed}) {
             </button>
 
             <div className="p-3">
-                <h4 className="logo-text">TicketFlow</h4>
+                <h4 className="logo-text">{appName}</h4>
                 <p className="small hide-on-collapse">Ticket Management System</p>
             </div>
 
@@ -55,6 +55,12 @@ function Sidebar({collapsed, setCollapsed}) {
                                     <Nav.Link className="sidebar-link admin-sub-link">
                                         <i className="bi bi-people"></i>
                                         <span className="hide-on-collapse">Users</span>
+                                    </Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to="/admin/categories">
+                                    <Nav.Link className="sidebar-link admin-sub-link">
+                                        <i className="bi bi-tags"></i>
+                                        <span className="hide-on-collapse">Categories</span>
                                     </Nav.Link>
                                 </LinkContainer>
                                 <LinkContainer to="/admin/tickets">

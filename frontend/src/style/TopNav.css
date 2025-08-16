@@ -35,10 +35,6 @@
     color: white;
 }
 
-.admin-sub-link-offcanvas {
-    padding-left: 2.5rem !important;
-}
-
 .arrow-icon {
     transition: transform 0.3s ease;
 }
@@ -66,9 +62,17 @@
 }
 
 .top-nav .dropdown-item:hover,
-.top-nav .dropdown-item:focus {
+.top-nav .dropdown-item:focus,
+.top-nav .dropdown-item:active {
     color: #F0386B;
-    background-color: rgba(31, 122, 140, 0.2);
+    background-color: rgb(184, 219, 217);
+    outline: none;
+    box-shadow: none;
+}
+
+.top-nav .dropdown-menu .dropdown-item.active {
+    color: #FFFFFF !important;                 /* White text */
+    background-color: #1F7A8C !important;      /* TEAL background */
 }
 
 .top-nav .dropdown-divider {
@@ -84,8 +88,9 @@
     padding-left: 2.5rem !important;
 }
 .offcanvas-divider {
-    border-top: 1px solid #1f7a8c;  /* Use your existing teal border color */
-    opacity: 0.5;                   /* Match the dropdown divider's opacity */
-    margin: 0.5rem 0;               /* Add some vertical spacing */
+    border-top: 1px solid #1f7a8c;
+    opacity: 0.5;
+    margin: 0.5rem 0;
 }
+
 

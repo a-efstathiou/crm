@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import "../style/LoadingButton.css";
+import "../../style/LoadingButton.css";
 
 function LoadingButton({ name, loadingText, onClick,className }) {
   const [isLoading, setLoading] = useState(false);
