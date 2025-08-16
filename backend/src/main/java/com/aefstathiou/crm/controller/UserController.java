@@ -1,11 +1,14 @@
 package com.aefstathiou.crm.controller;
 
+import com.aefstathiou.crm.dto.request.UserChangePasswordRequest;
+import com.aefstathiou.crm.dto.request.UserUpdateRequest;
 import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.dto.UserDTO;
 import com.aefstathiou.crm.dto.request.UserCreateRequest;
 import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
 import com.aefstathiou.crm.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -52,16 +56,16 @@ public class UserController {
         return ResponseEntity.ok("User Deleted");
     }
 
-    @PutMapping (path="{userId}")
+    @PutMapping (path="/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> updateUser(@PathVariable("userId") long id, @RequestBody User user) {
-        try {
-            userService.updateUser(id, user);
-        }
-        catch (IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok("User Updated") ;
+    public ResponseEntity<String> updateUser(
+            @PathVariable("userId") long id,
+            @RequestBody @Valid UserUpdateRequest userUpdateRequest
+    ) {
+
+        userService.updateUser(id, userUpdateRequest);
+
+        return ResponseEntity.ok("User Updated");
     }
 
     @GetMapping("/getAllRoles")
@@ -87,6 +91,16 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateRequest userCreateRequest) {
         UserDTO userDTO = userService.createUser(userCreateRequest);
         return ResponseEntity.ok(userDTO);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(
+            @RequestBody @Valid UserChangePasswordRequest userChangePasswordRequest,
+            Principal principal
+    ) {
+        userService.changePassword(userChangePasswordRequest,principal);
+
+        return ResponseEntity.ok().build();
     }
 
 }

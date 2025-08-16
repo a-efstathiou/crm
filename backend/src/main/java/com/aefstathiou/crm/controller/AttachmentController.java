@@ -83,9 +83,7 @@ public class AttachmentController {
         User currentUser = userRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        // Admins & Support Agents can see everything
         if (currentUser.getRole() != Role.ADMIN && currentUser.getRole() != Role.SUPPORT_AGENT) {
-            // Customers must own the ticket
             if (!request.getRequester().getId().equals(currentUser.getId())) {
                 throw new ForbiddenException("You do not have permission to view attachments for this ticket");
             }

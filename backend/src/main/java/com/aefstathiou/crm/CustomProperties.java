@@ -14,5 +14,5 @@ public class CustomProperties {
     String jwtSecret;
     String jwtAccessTokenExpiration;
     String jwtRefreshTokenExpiration;
-
+    String appName;
 }

@@ -1,14 +1,13 @@
 package com.aefstathiou.crm.dto.request;
 
-import com.aefstathiou.crm.enums.Category;
 import com.aefstathiou.crm.enums.Priority;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record SupportTicketCreateRequest(
         @NotBlank String description,
-        @NotNull Long requesterId,
+        @NotBlank String subject,
         Priority priority,
-        Category category,
+        Long categoryId,
         Long assignedToId
 ) { }
