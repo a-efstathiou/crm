@@ -1,7 +1,6 @@
 package com.aefstathiou.crm.exception;
 
 import com.aefstathiou.crm.model.ApiError;
-import com.aefstathiou.crm.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

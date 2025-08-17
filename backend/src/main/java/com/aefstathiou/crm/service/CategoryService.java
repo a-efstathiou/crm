@@ -1,8 +1,6 @@
 package com.aefstathiou.crm.service;
 
-import com.aefstathiou.crm.model.User;
 import com.aefstathiou.crm.specification.CategorySpecification;
-import com.aefstathiou.crm.specification.UserSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

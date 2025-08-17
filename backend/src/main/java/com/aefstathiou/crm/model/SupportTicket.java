@@ -2,7 +2,6 @@ package com.aefstathiou.crm.model;
 
 import com.aefstathiou.crm.enums.Priority;
 import com.aefstathiou.crm.enums.Status;
-import com.aefstathiou.crm.listener.TicketEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EntityListeners({TicketEntityListener.class, AuditingEntityListener.class})
+@EntityListeners({AuditingEntityListener.class})
 @Table(name = "support_tickets")
 @Getter
 @Setter

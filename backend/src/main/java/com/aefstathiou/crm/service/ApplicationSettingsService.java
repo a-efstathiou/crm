@@ -5,13 +5,11 @@ import com.aefstathiou.crm.dto.request.ApplicationSettingsUpdateRequest;
 import com.aefstathiou.crm.mapper.ApplicationSettingsDTOMapper;
 import com.aefstathiou.crm.model.ApplicationSettings;
 import com.aefstathiou.crm.repository.ApplicationSettingsRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 @RequiredArgsConstructor

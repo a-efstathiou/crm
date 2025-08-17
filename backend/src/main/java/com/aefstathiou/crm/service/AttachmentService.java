@@ -4,17 +4,16 @@ import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.exception.FileStorageException;
 import com.aefstathiou.crm.exception.FileValidationException;
 import com.aefstathiou.crm.exception.ForbiddenException;
-import com.aefstathiou.crm.model.ApplicationSettings;
 import com.aefstathiou.crm.model.Attachment;
 import com.aefstathiou.crm.model.SupportTicket;
 import com.aefstathiou.crm.model.User;
-import com.aefstathiou.crm.repository.ApplicationSettingsRepository;
 import com.aefstathiou.crm.repository.AttachmentRepository;
 import com.aefstathiou.crm.repository.SupportTicketRepository;
 import com.aefstathiou.crm.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +33,7 @@ public class AttachmentService {
     private final AttachmentRepository attachmentRepository;
     private final SupportTicketRepository supportTicketRepository;
     private final UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AttachmentService.class);
 
     private final Path rootLocation = Paths.get("uploads");
 
@@ -184,6 +184,18 @@ public class AttachmentService {
 
         } catch (IOException e) {
             throw new FileStorageException("Could not store logo file " + originalFilename, e);
+        }
+    }
+
+    public void deleteFileFromDisk(String storedPath){
+        if (storedPath == null || storedPath.isBlank()) {
+            return;
+        }
+        try {
+            Path filePath = resolvePath(storedPath);
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            logger.error("Failed to delete file from disk: {}. Error: {}", storedPath, e.getMessage());
         }
     }
 }

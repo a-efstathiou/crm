@@ -3,9 +3,9 @@ package com.aefstathiou.crm.service;
 import com.aefstathiou.crm.dto.UserDTO;
 import com.aefstathiou.crm.dto.request.UserChangePasswordRequest;
 import com.aefstathiou.crm.dto.request.UserUpdateRequest;
+import com.aefstathiou.crm.enums.Role;
 import com.aefstathiou.crm.mapper.UserDTOMapper;
 import com.aefstathiou.crm.model.User;
-import com.aefstathiou.crm.model.UserSpecifications;
 import com.aefstathiou.crm.repository.UserRepository;
 import com.aefstathiou.crm.dto.request.UserCreateRequest;
 import com.aefstathiou.crm.dto.request.UserRolesUpdateRequest;
@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -126,6 +129,60 @@ public class UserService {
 
         user.setPassword(hashedNewPassword);
         userRepository.save(user);
+    }
+
+    public List<UserDTO> searchCustomers(String searchTerm) {
+
+        Specification<User> finalSpec = UserSpecification.hasRole(Role.CUSTOMER);
+
+        Specification<User> searchSpec = null;
+
+        searchSpec = addOrSpecification(searchSpec, UserSpecification.firstNameContains(searchTerm));
+        searchSpec = addOrSpecification(searchSpec, UserSpecification.lastNameContains(searchTerm));
+        searchSpec = addOrSpecification(searchSpec, UserSpecification.emailContains(searchTerm));
+
+        if (searchSpec != null) {
+            finalSpec = finalSpec.and(searchSpec);
+        }
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        return userRepository.findAll(finalSpec, pageable).stream()
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDTO> searchInternalStuff(String searchTerm) {
+
+        List<Role> assignableRoles = List.of(Role.SUPPORT_AGENT, Role.SUPERVISOR, Role.ADMIN);
+
+        Specification<User> finalSpec = UserSpecification.hasRoleIn(assignableRoles);
+
+        Specification<User> searchSpec = null;
+
+        searchSpec = addOrSpecification(searchSpec, UserSpecification.firstNameContains(searchTerm));
+        searchSpec = addOrSpecification(searchSpec, UserSpecification.lastNameContains(searchTerm));
+        searchSpec = addOrSpecification(searchSpec, UserSpecification.emailContains(searchTerm));
+
+        if (searchSpec != null) {
+            finalSpec = finalSpec.and(searchSpec);
+        }
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        return userRepository.findAll(finalSpec, pageable).stream()
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    private Specification<User> addOrSpecification(Specification<User> baseSpec, Specification<User> newSpec) {
+        if (newSpec == null) {
+            return baseSpec;
+        }
+        if (baseSpec == null) {
+            return newSpec;
+        }
+        return baseSpec.or(newSpec);
     }
 
 

@@ -2,8 +2,10 @@ package com.aefstathiou.crm.controller;
 
 import com.aefstathiou.crm.dto.AttachmentDTO;
 import com.aefstathiou.crm.dto.SupportTicketDTO;
-import com.aefstathiou.crm.dto.request.SupportTicketCreateRequest;
+import com.aefstathiou.crm.dto.request.AgentTicketCreateRequest;
+import com.aefstathiou.crm.dto.request.CustomerTicketCreateRequest;
 import com.aefstathiou.crm.dto.request.SupportTicketUpdateRequest;
+import com.aefstathiou.crm.enums.Priority;
 import com.aefstathiou.crm.enums.Status;
 import com.aefstathiou.crm.service.SupportTicketService;
 import jakarta.validation.Valid;
@@ -28,13 +30,23 @@ public class SupportTicketController {
     private final SupportTicketService supportTicketService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public SupportTicketDTO createSupportTicket(
-            @Valid @RequestPart("ticket") SupportTicketCreateRequest ticket,
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public SupportTicketDTO createForCustomer(
+            @Valid @RequestPart("ticket") CustomerTicketCreateRequest ticket,
             @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
             Principal principal
     ) {
-        return supportTicketService.create(ticket, attachments, principal);
+        return supportTicketService.createTicketAsCustomer(ticket, attachments, principal);
+    }
+
+    @PostMapping(path={"/on-behalf-of"},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public SupportTicketDTO createOnBehalfOf(
+            @Valid @RequestPart("ticket") AgentTicketCreateRequest ticket,
+            @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
+            Principal principal
+    ) {
+        return supportTicketService.createTicketOnBehalfOfCustomer(ticket, attachments, principal);
     }
 
     @GetMapping("/{id}")
@@ -47,17 +59,20 @@ public class SupportTicketController {
             @RequestParam(required = false) Status status,
             @RequestParam(required = false) Long requesterId,
             @RequestParam(required = false) Long assignedToId,
+            @RequestParam(required = false) String subject,
+            @RequestParam(required = false) Priority priority,
             Pageable pageable
     ) {
-        return supportTicketService.list(status, requesterId, assignedToId, pageable);
+        return supportTicketService.list(subject, priority, status, requesterId, assignedToId, pageable);
     }
 
     @PatchMapping("/{id}")
     public SupportTicketDTO updateSupportTicket(
             @PathVariable Long id,
-            @Valid @RequestBody SupportTicketUpdateRequest update
+            @Valid @RequestBody SupportTicketUpdateRequest update,
+            Principal principal
     ) {
-        return supportTicketService.update(id, update);
+        return supportTicketService.update(id, update, principal);
     }
 
     @DeleteMapping("/{id}")

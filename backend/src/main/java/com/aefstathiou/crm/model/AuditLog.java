@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-@Data // Lombok for getters, setters, etc.
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
