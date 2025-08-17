@@ -34,6 +34,16 @@ function Sidebar({collapsed, setCollapsed}) {
                         <span className="hide-on-collapse">Dashboard</span>
                     </Nav.Link>
                 </LinkContainer>
+
+                {isLoggedIn && (
+                    <LinkContainer to="/tickets">
+                        <Nav.Link className="sidebar-link">
+                            <i className="bi bi-ticket-detailed"></i>
+                            <span className="hide-on-collapse">Tickets</span>
+                        </Nav.Link>
+                    </LinkContainer>
+                )}
+
                 {isLoggedIn && checkIfHasRole(role, "ROLE_ADMIN") && (
                     <>
                         <Nav.Link
@@ -48,7 +58,6 @@ function Sidebar({collapsed, setCollapsed}) {
                             {!collapsed && <i className={`bi bi-chevron-down ms-auto arrow-icon ${isAdminOpen ? 'rotate-180' : ''}`}></i>}
                         </Nav.Link>
 
-                        {/* Collapsible Admin Links */}
                         <Collapse in={!collapsed && isAdminOpen}>
                             <div id="admin-collapse-text">
                                 <LinkContainer to="/admin/users">
@@ -61,12 +70,6 @@ function Sidebar({collapsed, setCollapsed}) {
                                     <Nav.Link className="sidebar-link admin-sub-link">
                                         <i className="bi bi-tags"></i>
                                         <span className="hide-on-collapse">Categories</span>
-                                    </Nav.Link>
-                                </LinkContainer>
-                                <LinkContainer to="/admin/tickets">
-                                    <Nav.Link className="sidebar-link admin-sub-link">
-                                        <i className="bi bi-box"></i>
-                                        <span className="hide-on-collapse">Support Tickets</span>
                                     </Nav.Link>
                                 </LinkContainer>
                             </div>

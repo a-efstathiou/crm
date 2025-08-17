@@ -8,7 +8,7 @@ function CreateCategoryModal({ show, onHide, onSave }) {
     const handleSave = () => {
         if (categoryName.trim()) {
             onSave(categoryName.trim());
-            setCategoryName(''); // Clear field after save
+            setCategoryName('');
         }
     };
 

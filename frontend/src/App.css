@@ -50,10 +50,6 @@ body,
   border-color: #d02d5a !important;
 }
 
-/*
-  VERSION 2: Scoped overrides for components inside #root.
-  These have slightly higher specificity for the main app content.
-*/
 #root .btn-primary {
   background-color: #1F7A8C !important;
   border-color: #1F7A8C !important;
@@ -116,13 +112,28 @@ body,
 }
 
 .modal-footer .btn-secondary {
-  background-color: #6c757d !important; /* Standard Bootstrap secondary grey */
+  background-color: #6c757d !important;
   border-color: #6c757d !important;
   color: #FFFFFF !important;
 }
 
 .modal-footer .btn-secondary:hover,
 .modal-footer .btn-secondary:focus {
-  background-color: #5a6268 !important; /* A slightly darker grey for hover/focus */
+  background-color: #5a6268 !important;
   border-color: #545b62 !important;
+}
+
+#root .form-check-input {
+  border-color: #adb5bd
+}
+
+#root .form-check-input:checked {
+  background-color: #1F7A8C;
+  border-color: #1F7A8C;
+}
+
+#root .form-check-input:focus {
+  border-color: #1F7A8C;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(31, 122, 140, 0.25);
 }

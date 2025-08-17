@@ -1,10 +1,7 @@
-// components/Layout.jsx
 import React, {useContext} from 'react';
 import Sidebar from './Sidebar.jsx';
 import TopNav from './TopNav.jsx';
 import '../../style/Layout.css';
-import {LinkContainer} from "react-router-bootstrap";
-import {Nav} from "react-bootstrap";
 import {UserContext} from "./UserContext.jsx";
 
 function Layout({ children, collapsed, setCollapsed, showSidebar }) {

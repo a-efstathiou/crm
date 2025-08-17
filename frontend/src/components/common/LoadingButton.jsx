@@ -8,12 +8,11 @@ function LoadingButton({ name, loadingText, onClick,className }) {
   const handleClick = async () => {
     setLoading(true);
     try {
-      await onClick(); // Call the provided onClick function
-      setLoading(false); // Set isLoading back to false after onClick function is executed
+      await onClick();
+      setLoading(false);
     } catch (error) {
-      // Handle any errors
       console.error(error);
-      setLoading(false); // Set isLoading back to false in case of error
+      setLoading(false);
     }
   };
 

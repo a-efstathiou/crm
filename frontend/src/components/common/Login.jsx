@@ -1,22 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import LoadingButton from './LoadingButton.jsx';
 import Card from 'react-bootstrap/Card';
 import {FaEyeSlash, FaEye} from 'react-icons/fa';
-
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import AuthService from "../../services/authService.js";
 import UserService from "../../services/userService.js";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import '../../style/Login.css';
-import {UserContext} from "./UserContext.jsx"; // Import the external CSS file
+import {UserContext} from "./UserContext.jsx";
 
 
 const Login = () => {
@@ -31,7 +27,7 @@ const Login = () => {
 
     const handleButtonClick = async () => {
         try {
-            await AuthService.login(email, password); // Wait for login to complete
+            await AuthService.login(email, password);
             await handleLogin();
             setIsLoggedIn(true);
             toast.success("Successful Login");

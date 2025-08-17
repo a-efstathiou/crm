@@ -26,11 +26,6 @@ class AuthService {
     return api.get("/v1/auth/logout");
   }
 
-  getCurrentUser() {
-    return TokenService.getTokens();
-  }
-
-
 }
 
 export default new AuthService()

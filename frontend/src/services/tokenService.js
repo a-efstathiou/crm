@@ -10,10 +10,6 @@ class TokenService {
         return user?.access_token;
     }
 
-    getTokens() {
-        return JSON.parse(localStorage.getItem("tokens"));
-    }
-
     setTokens(user) {
         const {...userData} = user;
         localStorage.setItem("tokens", JSON.stringify(userData));

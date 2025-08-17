@@ -1,8 +1,5 @@
-// src/services/categoryService.js
-
 import api from './api';
 
-// This new function handles pagination and filtering
 const getAllCategoriesPaged = (page, size, filters) => {
     const params = {
         page,
@@ -26,8 +23,12 @@ const deleteCategory = (categoryId) => {
     return api.delete(`/v1/categories/${categoryId}`);
 };
 
-const enableCategory = (categoryid) => {
-    return api.put(`/v1/categories/${categoryid}/enable`);
+const enableCategory = (categoryId) => {
+    return api.put(`/v1/categories/${categoryId}/enable`);
+};
+
+const getActiveCategories = () => {
+    return api.get("/v1/categories/active");
 };
 
 const categoryService = {
@@ -36,6 +37,7 @@ const categoryService = {
     updateCategory,
     deleteCategory,
     enableCategory,
+    getActiveCategories,
 };
 
 export default categoryService;

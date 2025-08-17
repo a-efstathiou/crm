@@ -44,10 +44,6 @@ const Protected = ({ requiredRoles = [], isLoading, isLoggedIn, children, redire
         return () => window.removeEventListener("popstate", onPopState);
     }, [isLoggedIn, hasPermission, navigate, redirectTo]);
 
-    // if(isLoading){
-    //     return <div style={{color: "#F4E9CD", fontSize: "50px"}}>Loading...</div>
-    // }
-
     if (isLoading) {
         return (
             <div className="container py-5 text-center">

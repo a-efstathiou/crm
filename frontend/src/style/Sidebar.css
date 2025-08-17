@@ -26,7 +26,6 @@
     width: var(--sidebar-width-collapsed);
 }
 
-/* Navigation links */
 .nav-link.sidebar-link {
     display: flex;
     align-items: center;
@@ -93,7 +92,6 @@
     visibility: hidden;
 }
 
-/* Toggle button */
 .toggle-btn {
     background: none;
     border: none;
@@ -136,9 +134,9 @@
 
 .toggle-arrow {
     transition: transform 0.3s ease;
-    display: inline-block; /* Helps ensure transform works consistently */
+    display: inline-block;
 }
 
 .toggle-arrow.rotated {
-    transform: rotate(180deg); /* Rotate it to point to the right */
+    transform: rotate(180deg);
 }

@@ -1,5 +1,4 @@
 import UserService from "./userService.js";
-import TokenService from "./tokenService.js";
 
 class RefreshPageService {
 
@@ -24,14 +23,13 @@ class RefreshPageService {
             return UserService.getUserById(id)
                 .then(response => {
                     this.setLocalUser(response);
-                    return response; // Return the response to the calling code
+                    return response;
                 })
                 .catch(error => {
                     console.error("Error getting user:", error);
-                    throw error; // Re-throw the error to propagate it to the calling code
+                    throw error;
                 });
         } else {
-            // If not logged in or ID not valid, return a resolved promise with null
             return Promise.resolve(null);
         }
     }
@@ -54,10 +52,6 @@ class RefreshPageService {
 
     setLocalUser(user){
        this.user = user;
-    }
-
-    getLocalUser(){
-        return this.user;
     }
 
     setReload(status){
