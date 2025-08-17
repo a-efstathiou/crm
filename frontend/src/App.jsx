@@ -8,14 +8,15 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./components/common/Login.jsx";
 import Home from "./components/common/Home.jsx";
 import PageNotFound from "./components/common/PageNotFound.jsx";
-import Profile from "./components/profile/Profile.jsx";
 import UserList from "./components/admin/UserList.jsx";
-import SupportTickets from "./components/tickets/SupportTickets.jsx";
 import Layout from "./components/common/Layout.jsx";
 import SettingsPage from "./components/settings/SettingsPage.jsx";
 import settingsService from "./services/settingsService.js";
 import CategoryList from "./components/admin/CategoryList.jsx";
 import HelpPage from "./components/common/HelpPage.jsx";
+import TicketList from './components/tickets/TicketList';
+import CreateTicket from './components/tickets/CreateTicket';
+import TicketDetail from './components/tickets/TicketDetail';
 
 function App() {
 
@@ -38,12 +39,10 @@ function App() {
             refreshPageService.onPageLoad()
                 .then((localUser) => {
                     if (localUser != null) {
-                        // Use the fetched 'localUser' directly to update all related state
                         setUser(localUser);
                         setIsLoggedIn(refreshPageService.getIsLoggedIn());
                         setFirstName(localUser.firstName);
-                        setRole(localUser.authorities?.[0] || null); // Safely access authorities
-                        console.log(localUser);
+                        setRole(localUser.authorities?.[0] || null);
                     }
                 }).catch((error) => {
                 console.error("Error fetching localUser:", error);
@@ -142,14 +141,38 @@ function App() {
                                 }
                             />
                             <Route
-                                path="/admin/tickets"
+                                path="/tickets"
                                 element={
                                     <ProtectedRoute
                                         isLoading={isLoading}
-                                        requiredRoles={["ROLE_ADMIN", "ROLE_SUPPORT_AGENT", "ROLE_SUPERVISOR"]}
+                                        requiredRoles={[]}
                                         isLoggedIn={isLoggedIn}
                                     >
-                                        <SupportTickets />
+                                        <TicketList />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/tickets/new"
+                                element={
+                                    <ProtectedRoute
+                                        isLoading={isLoading}
+                                        requiredRoles={[]}
+                                        isLoggedIn={isLoggedIn}
+                                    >
+                                        <CreateTicket />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/tickets/:ticketId"
+                                element={
+                                    <ProtectedRoute
+                                        isLoading={isLoading}
+                                        requiredRoles={[]}
+                                        isLoggedIn={isLoggedIn}
+                                    >
+                                        <TicketDetail />
                                     </ProtectedRoute>
                                 }
                             />
@@ -165,21 +188,6 @@ function App() {
                                     </ProtectedRoute>
                                 }
                             />
-                            <Route
-                                path="/profile"
-                                element={
-                                    <ProtectedRoute
-                                        isLoading={isLoading}
-                                        requiredRoles={[]}
-                                        isLoggedIn={isLoggedIn}
-                                    >
-                                        <Profile />
-                                    </ProtectedRoute>
-                                }
-                            />
-
-
-
                         </Routes>
                     </Layout>
 

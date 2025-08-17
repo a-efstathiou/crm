@@ -15,12 +15,9 @@ class SettingsService {
     };
 
    uploadLogo(logoFile) {
-        // We must use FormData to send a file
         const formData = new FormData();
-        // The key 'logoFile' must match the @RequestParam("logoFile") in your controller
         formData.append('logoFile', logoFile);
 
-        // We need to tell axios to use a different Content-Type for file uploads
         return api.post("/v1/settings/logo-upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",

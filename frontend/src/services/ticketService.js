@@ -1,7 +1,12 @@
 import api from './api';
 
-const getTickets = (page, size, filters) => {
-    const params = { page, size, ...filters };
+const getTickets = (page, size, filters, sortField, sortDir) => {
+    const params = {
+        page,
+        size,
+        ...filters,
+        sort: `${sortField},${sortDir}`,
+    };
     return api.get('/v1/tickets', { params });
 };
 
@@ -9,15 +14,14 @@ const getTicketById = (ticketId) => {
     return api.get(`/v1/tickets/${ticketId}`);
 };
 
-const createTicket = (ticketData, files) => {
+const createTicketAsCustomer = (ticketData, files) => {
     const formData = new FormData();
-
     const ticketBlob = new Blob([JSON.stringify(ticketData)], { type: 'application/json' });
-    formData.append('request', ticketBlob);
+    formData.append('ticket', ticketBlob);
 
     if (files && files.length > 0) {
         files.forEach(file => {
-            formData.append('files', file);
+            formData.append('attachments', file);
         });
     }
 
@@ -26,8 +30,24 @@ const createTicket = (ticketData, files) => {
     });
 };
 
+const createTicketOnBehalfOf = (ticketData, files) => {
+    const formData = new FormData();
+    const ticketBlob = new Blob([JSON.stringify(ticketData)], { type: 'application/json' });
+    formData.append('ticket', ticketBlob);
+
+    if (files && files.length > 0) {
+        files.forEach(file => {
+            formData.append('attachments', file);
+        });
+    }
+
+    return api.post('/v1/tickets/on-behalf-of', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+};
+
 const updateTicket = (ticketId, updateData) => {
-    return api.put(`/v1/tickets/${ticketId}`, updateData);
+    return api.patch(`/v1/tickets/${ticketId}`, updateData);
 };
 
 const getComments = (ticketId) => {
@@ -41,7 +61,8 @@ const addComment = (ticketId, commentData) => {
 const ticketService = {
     getTickets,
     getTicketById,
-    createTicket,
+    createTicketAsCustomer,
+    createTicketOnBehalfOf,
     updateTicket,
     getComments,
     addComment

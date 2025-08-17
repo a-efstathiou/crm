@@ -1,8 +1,6 @@
 package com.aefstathiou.crm.repository;
 
 import com.aefstathiou.crm.model.Category;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

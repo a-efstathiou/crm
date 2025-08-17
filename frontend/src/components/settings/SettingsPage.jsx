@@ -22,7 +22,6 @@ function SettingsPage() {
 
                     <Tabs defaultActiveKey="profile" id="settings-tabs" variant="pills" className="mb-4">
 
-                        {/* The Tab content will now render inside this centered layout */}
                         <Tab eventKey="profile" title="Profile">
                             <ProfileSettings currentUser={user} />
                         </Tab>

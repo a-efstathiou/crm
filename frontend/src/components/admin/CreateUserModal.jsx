@@ -8,7 +8,7 @@ const CreateUserModal = ({ show, onHide, availableRoles, onSave }) => {
         lastName: '',
         email: '',
         password: '',
-        role: 'CUSTOMER' // Default to the first available role
+        role: 'CUSTOMER'
     });
     const [errors, setErrors] = useState({});
 

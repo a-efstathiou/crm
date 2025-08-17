@@ -26,18 +26,6 @@ class UserService {
         });
     }
 
-    getAllUsers(){
-        return api
-        .get("/v1/users/getAllUsers")
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {
-            console.error("Error getting users:", error);
-            throw error; // Rethrow the error to handle it in the caller
-        });
-    }
-
     getAllUsersPaged(page, size, filters = {}){
 
         const params = new URLSearchParams({
@@ -45,7 +33,6 @@ class UserService {
             size
         });
 
-        // Add filter values to the query params if they exist
         Object.keys(filters).forEach(key => {
             if (filters[key]) {
                 params.append(key, filters[key]);
@@ -63,19 +50,22 @@ class UserService {
         });
     }
 
-    editUserRole(id,role){
-        return api
-        .put("/v1/users/"+id,{
-            role
-        })
-        .then(response => {
-            return response.data;
-        })
-        .catch(error => {
-            console.error("Error editing user role:", error);
-            throw error; // Rethrow the error to handle it in the caller
-        });
-    }
+    searchCustomers(searchTerm) {
+        const params = {
+            q: searchTerm,
+        };
+
+        return api.get("/v1/users/search-customers", { params });
+    };
+
+    searchInternalStaff(searchTerm) {
+        const params = {
+            q: searchTerm,
+        };
+
+        return api.get("/v1/users/search-staff", { params });
+    };
+
 
     getAllRoles(){
         return api

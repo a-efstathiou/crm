@@ -36,7 +36,6 @@ function CategoryList() {
         setIsTableLoading(true);
         setError(null);
         try {
-            // Prepare filters for the API. We don't send 'isActive' if it's 'all' (null).
             const apiFilters = { name: currentFilters.name };
             if (currentFilters.isActive !== null) {
                 apiFilters.isActive = currentFilters.isActive;
@@ -54,7 +53,6 @@ function CategoryList() {
         }
     }, []);
 
-    // This effect triggers a refetch whenever filters or pagination settings change
     useEffect(() => {
         const handler = setTimeout(() => {
             setCurrentPage(0);
@@ -84,12 +82,10 @@ function CategoryList() {
     const handlePageChange = (newPage) => {
         if (newPage >= 0 && newPage < totalPages) {
             setCurrentPage(newPage);
-            // Fetch data for the new page, but don't reset filters
             fetchCategories(newPage, pageSize, filters);
         }
     };
 
-    // --- CRUD Handlers ---
     const handleCreateCategory = async (categoryName) => {
         try {
             await categoryService.createCategory(categoryName);

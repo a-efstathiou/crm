@@ -71,8 +71,8 @@
 }
 
 .top-nav .dropdown-menu .dropdown-item.active {
-    color: #FFFFFF !important;                 /* White text */
-    background-color: #1F7A8C !important;      /* TEAL background */
+    color: #FFFFFF !important;
+    background-color: #1F7A8C !important;
 }
 
 .top-nav .dropdown-divider {

@@ -50,6 +50,9 @@ function TopNav() {
         };
     }, [show, handleClose]);
 
+    const isInternalUser = checkIfHasRole(role, ["ROLE_ADMIN", "ROLE_SUPERVISOR", "ROLE_SUPPORT_AGENT"]);
+    const isAdmin = checkIfHasRole(role, "ROLE_ADMIN");
+
     return (
         <>
             <Navbar className="top-nav px-3" fixed="top">
@@ -83,9 +86,6 @@ function TopNav() {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <LinkContainer to="/profile">
-                                        <Dropdown.Item>My Profile</Dropdown.Item>
-                                    </LinkContainer>
                                     <LinkContainer to="/settings">
                                         <Dropdown.Item>Settings</Dropdown.Item>
                                     </LinkContainer>
@@ -119,12 +119,19 @@ function TopNav() {
                 <Offcanvas.Body className="d-flex flex-column p-0">
                     <Nav className="flex-column offcanvas-nav p-3">
                         {isLoggedIn && (
-                            <LinkContainer to="/" onClick={handleClose}>
-                            <Nav.Link><i className="bi bi-house me-2"></i> Dashboard</Nav.Link>
-                        </LinkContainer>
+                            <>
+                                <LinkContainer to="/dashboard" onClick={handleClose}>
+                                    <Nav.Link><i className="bi bi-house me-2"></i>Dashboard</Nav.Link>
+                                </LinkContainer>
+                                {isInternalUser && (
+                                    <LinkContainer to="/tickets" onClick={handleClose}>
+                                        <Nav.Link><i className="bi bi-ticket-detailed me-2"></i>Tickets</Nav.Link>
+                                    </LinkContainer>
+                                )}
+                            </>
                         )}
 
-                        {isLoggedIn && checkIfHasRole(role, "ROLE_ADMIN") && (
+                        {isLoggedIn && isAdmin && (
                             <>
                                 <Nav.Link
                                     onClick={() => setAdminOpen(!isAdminOpen)}
@@ -143,7 +150,7 @@ function TopNav() {
                                         </LinkContainer>
                                         <LinkContainer to="/admin/categories">
                                             <Nav.Link className="offcanvas-sub-link">
-                                                <i className="bi bi-tags"></i>
+                                                <i className="bi bi-tags me-2"></i>
                                                 Categories
                                             </Nav.Link>
                                         </LinkContainer>

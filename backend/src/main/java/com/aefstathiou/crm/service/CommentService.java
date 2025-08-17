@@ -35,6 +35,10 @@ public class CommentService {
         SupportTicket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket not found: " + ticketId));
 
+        if (ticket.getStatus() == Status.CLOSED) {
+            throw new IllegalStateException("Cannot add comments to a closed ticket.");
+        }
+        
         User author = userRepository.findByEmail(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
@@ -45,23 +49,30 @@ public class CommentService {
         comment.setSupportTicket(ticket);
         comment.setAuthor(author);
 
+        boolean isInternal = false;
+
         if (author.getRole() == Role.CUSTOMER) {
-            comment.setInternalNote(false);
 
             if (ticket.getStatus() == Status.WAITING_CUSTOMER || ticket.getStatus() == Status.RESOLVED) {
                 ticket.setStatus(Status.IN_PROGRESS);
                 ticket.setResolvedAt(null);
             }
         } else {
-            comment.setInternalNote(request.isInternalNote() != null && request.isInternalNote());
+            isInternal = (request.isInternalNote() != null && request.isInternalNote());
 
-            if (ticket.getStatus() == Status.NEW) {
-                ticket.setStatus(Status.OPEN);
+            if (ticket.getAssignedTo() == null) {
+                ticket.setAssignedTo(author);
+            }
+
+            if (ticket.getStatus() == Status.NEW || ticket.getStatus() == Status.OPEN) {
+                ticket.setStatus(Status.IN_PROGRESS);
             }
         }
 
+        comment.setInternalNote(isInternal);
+
         Comment savedComment = commentRepository.save(comment);
-        ticketRepository.save(ticket); // Save the ticket to persist status changes
+        ticketRepository.save(ticket);
 
         return commentDTOMapper.apply(savedComment);
     }

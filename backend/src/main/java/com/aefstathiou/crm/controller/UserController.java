@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -101,6 +102,20 @@ public class UserController {
         userService.changePassword(userChangePasswordRequest,principal);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search-customers")
+    @PreAuthorize("hasAnyRole('SUPPORT_AGENT', 'SUPERVISOR', 'ADMIN')")
+    public ResponseEntity<List<UserDTO>> searchCustomers(@RequestParam("q") String searchTerm) {
+        List<UserDTO> customers = userService.searchCustomers(searchTerm);
+        return ResponseEntity.ok(customers);
+    }
+
+    @GetMapping("/search-staff")
+    @PreAuthorize("hasAnyRole('SUPPORT_AGENT', 'SUPERVISOR', 'ADMIN')")
+    public ResponseEntity<List<UserDTO>> searchInternalStaff(@RequestParam("q") String searchTerm) {
+        List<UserDTO> customers = userService.searchInternalStuff(searchTerm);
+        return ResponseEntity.ok(customers);
     }
 
 }

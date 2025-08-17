@@ -1,5 +1,3 @@
-// src/components/settings/ProfileSettings.jsx
-
 import React, { useState, useEffect} from 'react';
 import { Form, Button, Card, Row, Col, Alert } from 'react-bootstrap';
 import userService from "../../services/userService.js";
@@ -28,7 +26,6 @@ function ProfileSettings({ currentUser }) {
     const handlePasswordChange = async (e) => {
         e.preventDefault();
 
-        // --- Frontend Validation ---
         if (!currentPassword || !newPassword || !confirmPassword) {
             toast.error("All password fields are required.");
             return;
