@@ -8,13 +8,12 @@ class SettingsService {
     };
 
     updateAppName(appName) {
-        // The request body must match the UpdateAppNameRequest DTO
         const requestData = { appName };
         return api.put("/v1/settings/application", requestData)
             .then(response => response.data);
     };
 
-   uploadLogo(logoFile) {
+    uploadLogo(logoFile) {
         const formData = new FormData();
         formData.append('logoFile', logoFile);
 
