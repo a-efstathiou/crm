@@ -1,5 +1,6 @@
 import axios from "axios";
 import TokenService from "./tokenService.js";
+import authService from "./authService.js";
 
 const instance = axios.create({
     baseURL: "http://localhost:8080/api/",
@@ -14,7 +15,8 @@ instance.interceptors.request.use(
 
         const publicUrls = [
             "/v1/auth/authenticate",
-            "/v1/auth/refresh-token"
+            "/v1/auth/refresh-token",
+            "/v1/settings/application"
         ];
 
         if (token && !publicUrls.includes(config.url)) {
@@ -51,6 +53,8 @@ instance.interceptors.response.use(
                         TokenService.setTokens(rs.data);
                         return instance(originalConfig);
                     } catch (_error) {
+                        console.error("Refresh token is invalid. Forcing logout.", _error);
+                        await authService.logout();
                         return Promise.reject(_error);
                     }
                 }
