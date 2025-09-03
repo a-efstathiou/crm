@@ -5,6 +5,7 @@ public enum Status {
     OPEN,
     IN_PROGRESS,
     WAITING_CUSTOMER,
+    ON_HOLD,
     RESOLVED,
     CLOSED
 }

@@ -35,7 +35,9 @@ public class SupportTicket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_to")
     private User assignedTo;
-    @Enumerated(EnumType.STRING) private Status status = Status.NEW;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
+    private Status status = Status.NEW;
     @Enumerated(EnumType.STRING) private Priority priority = Priority.MEDIUM;
 
     @ManyToOne(fetch = FetchType.LAZY)
