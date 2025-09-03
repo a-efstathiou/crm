@@ -93,4 +93,20 @@
     margin: 0.5rem 0;
 }
 
+.topnav-links .dropdown-item {
+    font-weight: 500;
+}
 
+.topnav-links .dropdown-item:hover,
+.topnav-links .dropdown-item:focus,
+.topnav-links .dropdown-item:active {
+    color: #F0386B !important;
+    background-color: #B8DBD9 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.topnav-links .dropdown-item.active {
+    color: #B8DBD9 !important;
+    background-color: transparent !important;
+}
