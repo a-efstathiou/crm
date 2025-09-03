@@ -238,11 +238,25 @@ function CategoryList() {
                 </Table>
 
                 {totalPages > 1 && (
-                    <nav><ul className="pagination justify-content-center">
-                        <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}><Button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Previous</Button></li>
-                        <li className="page-item disabled"><span className="page-link">Page {currentPage + 1} of {totalPages}</span></li>
-                        <li className={`page-item ${currentPage >= totalPages - 1 ? 'disabled' : ''}`}><Button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Next</Button></li>
-                    </ul></nav>
+                    <nav aria-label="Page navigation">
+                        <ul className="pagination justify-content-center">
+                            <li className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                                    Previous
+                                </button>
+                            </li>
+                            <li className="page-item disabled">
+                                <span className="page-link">
+                                    Page {currentPage + 1} of {totalPages}
+                                </span>
+                            </li>
+                            <li className={`page-item ${currentPage >= totalPages - 1 ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+                                    Next
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 )}
             </Container>
 

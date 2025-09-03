@@ -71,7 +71,7 @@ function ApplicationSettings() {
                                         <Form.Label>Application Name</Form.Label>
                                         <Form.Control type="text" value={localAppName} onChange={(e) => setLocalAppName(e.target.value)} />
                                     </Form.Group>
-                                    <Button variant="primary" type="submit" disabled={isSavingName}>
+                                    <Button variant="secondary" type="submit" disabled={isSavingName}>
                                         {isSavingName ? 'Saving...' : 'Save Name'}
                                     </Button>
                                 </Form>

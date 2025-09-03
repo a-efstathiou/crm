@@ -9,8 +9,9 @@ import { checkIfHasRole } from '../../utils/roleUtils';
 import { toast } from 'react-toastify';
 import './TicketDetail.css';
 import BusinessProcessFlow from './BusinessProcessFlow.jsx';
-import AssignTicketModal from './AssignTicketModal'; // Import the new modals
+import AssignTicketModal from './AssignTicketModal';
 import UpdateTicketModal from './UpdateTicketModal.jsx';
+import AddAttachmentModal from './AddAttachmentModal';
 
 function TicketDetail() {
     const {ticketId} = useParams();
@@ -33,6 +34,7 @@ function TicketDetail() {
 
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showAddAttachmentModal, setShowAddAttachmentModal] = useState(false);
 
     const [activeTab, setActiveTab] = useState('conversation');
 
@@ -178,6 +180,17 @@ function TicketDetail() {
         }
     };
 
+    const handleAddAttachments = async (files) => {
+        try {
+            await ticketService.addAttachments(ticketId, files);
+            toast.success(`${files.length} file(s) uploaded successfully!`);
+            setShowAddAttachmentModal(false);
+            fetchData(); // Refresh all ticket data to update the attachments tab
+        } catch (error) {
+            toast.error(error.response.data?.errorMessage || "Failed to upload files.");
+        }
+    };
+
     if (isLoading) {
         return <Container fluid className="p-4 text-center"><Spinner animation="border"/></Container>;
     }
@@ -213,9 +226,14 @@ function TicketDetail() {
                     )}
 
                     {canUpdate && (
-                        <Button variant="outline-secondary" size="sm" onClick={() => setShowUpdateModal(true)}>
-                            <i className="bi bi-pencil-square me-2"></i>Edit Properties
-                        </Button>
+                        <>
+                            <Button variant="outline-secondary" size="sm" onClick={() => setShowUpdateModal(true)}>
+                                <i className="bi bi-pencil-square me-2"></i>Edit Properties
+                            </Button>
+                            <Button variant="outline-secondary" size="sm" onClick={() => setShowAddAttachmentModal(true)}>
+                                <i className="bi bi-paperclip me-2"></i>Add Attachments
+                            </Button>
+                        </>
                     )}
                 </div>
 
@@ -403,6 +421,12 @@ function TicketDetail() {
                     )
                 )}
             </Container>
+
+            <AddAttachmentModal
+                show={showAddAttachmentModal}
+                onHide={() => setShowAddAttachmentModal(false)}
+                onSave={handleAddAttachments}
+            />
 
             <AssignTicketModal
                 show={showAssignModal}
