@@ -21,7 +21,14 @@ function UpdateTicketModal({ show, onHide, onSave, ticket }) {
     const handleSave = () => {
         setIsSaving(true);
         const updateData = { status, priority, categoryId };
-        onSave(updateData);
+
+        try {
+            onSave(updateData);
+            onHide();
+        } finally {
+            setIsSaving(false);
+        }
+
     };
 
     if (!ticket) return null;
