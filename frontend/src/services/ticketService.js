@@ -58,6 +58,18 @@ const addComment = (ticketId, commentData) => {
     return api.post(`/v1/tickets/${ticketId}/comments`, commentData);
 };
 
+const addAttachments = (ticketId, files) => {
+    const formData = new FormData();
+    if (files && files.length > 0) {
+        files.forEach(file => {
+            formData.append('attachments', file);
+        });
+    }
+    return api.post(`/v1/tickets/${ticketId}/attachments`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+};
+
 const ticketService = {
     getTickets,
     getTicketById,
@@ -65,7 +77,8 @@ const ticketService = {
     createTicketOnBehalfOf,
     updateTicket,
     getComments,
-    addComment
+    addComment,
+    addAttachments,
 };
 
 export default ticketService;
