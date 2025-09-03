@@ -105,7 +105,7 @@ function TicketDetail() {
         try {
             await ticketService.updateTicket(ticketId, updateData);
             toast.success("You have claimed this ticket!");
-            fetchData(); // Refresh the page data
+            fetchData();
         } catch (error) {
             toast.error(error.response.data?.errorMessage || "Failed to claim ticket.");
         }
@@ -157,7 +157,7 @@ function TicketDetail() {
         try {
             await ticketService.updateTicket(ticketId, updateData);
             toast.success("Ticket has been marked as Resolved!");
-            fetchData(); // Refresh data
+            fetchData();
         } catch (error) {
             toast.error(error.response.data?.errorMessage || "Failed to update ticket status.");
         }
@@ -166,7 +166,7 @@ function TicketDetail() {
     const handleReopenTicket = async () => {
         const updateData = {
             subject: ticket.subject,
-            status: 'IN_PROGRESS', // Re-open to In Progress
+            status: 'IN_PROGRESS',
             priority: ticket.priority,
             categoryId: ticket.category.id,
             assignedToId: ticket.assignedTo?.id
@@ -185,7 +185,7 @@ function TicketDetail() {
             await ticketService.addAttachments(ticketId, files);
             toast.success(`${files.length} file(s) uploaded successfully!`);
             setShowAddAttachmentModal(false);
-            fetchData(); // Refresh all ticket data to update the attachments tab
+            fetchData();
         } catch (error) {
             toast.error(error.response.data?.errorMessage || "Failed to upload files.");
         }

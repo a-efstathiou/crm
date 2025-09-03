@@ -35,7 +35,7 @@ function UpdateTicketModal({ show, onHide, onSave, ticket }) {
                         <Form.Label>Status</Form.Label>
                         <Form.Select value={status} onChange={e => setStatus(e.target.value)}>
                             <option>NEW</option><option>OPEN</option><option>IN_PROGRESS</option>
-                            <option>WAITING_CUSTOMER</option><option>RESOLVED</option><option>CLOSED</option>
+                            <option>WAITING_CUSTOMER</option><option>ON_HOLD</option><option>RESOLVED</option><option>CLOSED</option>
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3">
