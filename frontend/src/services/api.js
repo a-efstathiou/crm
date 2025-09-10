@@ -15,9 +15,12 @@ instance.interceptors.request.use(
 
         const publicUrls = [
             "/v1/auth/authenticate",
-            "/v1/auth/refresh-token",
-            "/v1/settings/application"
+            "/v1/auth/refresh-token"
         ];
+
+        if (config.url === "/v1/settings/application" && config.method.toLowerCase() === 'get') {
+            return config;
+        }
 
         if (token && !publicUrls.includes(config.url)) {
             config.headers["Authorization"] = 'Bearer ' + token;
